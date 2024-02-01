@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:gene/authentication/sign_in_screen.dart';
+import 'package:gene/authentication/sign_up_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme), // Apply the Inter font
         // TODO: Apply the Inter font offline
       ),
-      home: const SignIn(),
+      home: const SignUp(),
     );
   }
 }
