@@ -1,28 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:gene/custom_widgets/thirdparty_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gene/theme/font_weight.dart';
 import 'package:gene/theme/color_code.dart';
+import 'package:gene/custom_widgets/thirdparty_auth.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<SignIn> createState() => _SignInState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignInState extends State<SignIn> {
+  bool isChecked = false;
+
+  Color getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.green[300]!;
+    }
+    return Colors.blue;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorCodeMap['Background'],
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: SafeArea(
           child: Column(
             children: [
               Text(
-                "Hello there 👋",
+                "Welcome back 👋",
                 style: GoogleFonts.inter(
                   fontSize: 20,
                   fontWeight: fontWeightMap['Semi Bold'],
@@ -30,7 +42,7 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               Text(
-                "Please enter you email & password to create an account",
+                "Please enter you email & password to sign in",
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: fontWeightMap['Regular'],
@@ -58,6 +70,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
               ),
+              
               const ThirdpartyAuth()
             ],
           ),
