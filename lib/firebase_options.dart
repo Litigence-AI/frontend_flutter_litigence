@@ -67,6 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1021838572230',
     projectId: 'gen-e-sustainathon',
     storageBucket: 'gen-e-sustainathon.appspot.com',
+    androidClientId: '1021838572230-3ngl3107gd3u7obn576n8bsa277s85ha.apps.googleusercontent.com',
     iosClientId: '1021838572230-favtuvhmcf3dg2i5icbjenbam5s4dtki.apps.googleusercontent.com',
     iosBundleId: 'com.example.gene',
   );
@@ -77,6 +78,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1021838572230',
     projectId: 'gen-e-sustainathon',
     storageBucket: 'gen-e-sustainathon.appspot.com',
+    androidClientId: '1021838572230-3ngl3107gd3u7obn576n8bsa277s85ha.apps.googleusercontent.com',
     iosClientId: '1021838572230-htkkdo3sp6qaalj250t830hjodh7pgff.apps.googleusercontent.com',
     iosBundleId: 'com.example.gene.RunnerTests',
   );
