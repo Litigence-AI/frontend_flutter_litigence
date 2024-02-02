@@ -1,4 +1,4 @@
-import '../../message.dart';
+import 'message.dart';
 import 'package:chat_bubbles/bubbles/bubble_normal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -45,6 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
       }
     } on Exception catch (e) {
       print('Exception occoured: $e');
+      
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Some error occurred, please try again!")));
     }

@@ -47,6 +47,7 @@ dependencies:
   chat_bubbles: ^1.5.0
   flutter_markdown: ^0.6.18+3
   dots_indicator: ^3.0.0
+  cool_alert: ^2.0.1
 
 dev_dependencies:
   flutter_test:
