@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:gene/pages/authentication/sign_up_screen.dart';
+import 'package:gene/pages/blog/blog_page.dart';
+import 'package:gene/pages/dashboard/chat_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 import 'package:gene/pages/dashboard/dashboard.dart';
+import 'package:gene/pages/authentication/sign_in_screen.dart';
+import 'package:gene/pages/authentication/sign_up_screen.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => const Dashboard(),
         '/signUp': (context) => const SignUp(),
         '/signIn': (context) => const SignUp(),
+        '/blog': (context) =>  BlogPage(),
       },
       title: 'Gen-E',
       theme: ThemeData(
@@ -34,7 +39,7 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme), // Apply the Inter font
         // TODO: Apply the Inter font offline
       ),
-      home: const SignUp(),
+      home: const ChatScreen(),
     );
   }
 }
