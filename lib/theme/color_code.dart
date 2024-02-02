@@ -8,5 +8,5 @@ final Map<String, Color> colorCodeMap = {
   'Light Gray': const Color(0xFFCACACA),
   'Dark Black': const Color(0xFF212121),
   'Border': const Color(0xFFEFEEEE),
-  'Background': const Color(0xFFD1D1D1),
+  'Background': const Color(0xFFFFFFFF),
 };
