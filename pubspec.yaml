@@ -38,10 +38,14 @@ dependencies:
   firebase_analytics: ^10.8.1
   firebase_core: ^2.25.0
   firebase_auth: ^4.17.0
-  firebase_ui_auth: ^1.12.1
   google_fonts: ^6.1.0
   flutter_svg: ^2.0.9
   google_sign_in: ^6.2.1
+  url_launcher: ^6.2.4
+  html: ^0.15.4
+  http: ^1.2.0
+  chat_bubbles: ^1.5.0
+  flutter_markdown: ^0.6.18+3
 
 dev_dependencies:
   flutter_test:
