@@ -38,7 +38,8 @@ Future<UserCredential> signInWithMicrosoft() async {
         if (kDebugMode) {
           print('Error occurred during Microsoft sign-in: $onError');
         }
-        // Handle the error here
+                throw onError; // Rethrow the error to satisfy the return type
+// Handle the error here
       });
     }
   } catch (e) {
