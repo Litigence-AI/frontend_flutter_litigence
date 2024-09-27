@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -18,7 +18,9 @@ Future<dynamic> signInWithGoogle() async {
 
   } catch (e) {
     
-    print('Exception occurred during Google sign-in: $e');
+    if (kDebugMode) {
+      print('Exception occurred during Google sign-in: $e');
+    }
     // Handle the exception here
   }
 }
@@ -33,14 +35,18 @@ Future<UserCredential> signInWithMicrosoft() async {
       return await FirebaseAuth.instance.getRedirectResult().then((result) {
         return result;
       }).catchError((onError) {
-        print('Error occurred during Microsoft sign-in: $onError');
+        if (kDebugMode) {
+          print('Error occurred during Microsoft sign-in: $onError');
+        }
         // Handle the error here
       });
     }
   } catch (e) {
-    print('Exception occurred during Microsoft sign-in: $e');
+    if (kDebugMode) {
+      print('Exception occurred during Microsoft sign-in: $e');
+    }
     // Handle the exception here
-    throw e; // Rethrow the exception if needed
+    rethrow; // Rethrow the exception if needed
   }
 }
 
@@ -53,8 +59,10 @@ Future<UserCredential> signInWithApple() async {
       return await FirebaseAuth.instance.signInWithProvider(appleProvider);
     }
   } catch (e) {
-    print('Exception occurred during Apple sign-in: $e');
+    if (kDebugMode) {
+      print('Exception occurred during Apple sign-in: $e');
+    }
     // Handle the exception here
-    throw e; // Rethrow the exception if needed
+    rethrow; // Rethrow the exception if needed
   }
 }
