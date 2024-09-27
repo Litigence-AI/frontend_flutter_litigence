@@ -9,7 +9,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
   User? userInfo;
 
   @override
@@ -24,9 +23,13 @@ class _DashboardState extends State<Dashboard> {
 
   Future<void> signOutFromGoogle() async {
     try {
-      await FirebaseAuth.instance
-          .signOut()
-          .then((value) => Navigator.pushReplacementNamed(context, '/signIn'));
+      await FirebaseAuth.instance.signOut().then((value) => {
+                if (mounted)
+                  {Navigator.of(context).pushReplacementNamed('/signIn')}
+              }
+          // Guard navigation with 'mounted' check
+
+          );
     } on Exception catch (_) {
       // TODO
     }
