@@ -49,9 +49,11 @@ class _ChatScreenState extends State<ChatScreen> {
       if (kDebugMode) {
         print('Exception occoured: $e');
       }
-      
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Some error occurred, please try again!")));
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Some error occurred, please try again!")));
+      }
     }
   }
 
