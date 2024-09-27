@@ -23,9 +23,9 @@ class CustomCheckbox extends StatelessWidget {
       children: [
         Checkbox(
           checkColor: Colors.white,
-          fillColor: MaterialStateProperty.resolveWith(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.selected)) {
+          fillColor: WidgetStateProperty.resolveWith(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.selected)) {
                 return colorCodeMap['Green'];
               }
               return null;

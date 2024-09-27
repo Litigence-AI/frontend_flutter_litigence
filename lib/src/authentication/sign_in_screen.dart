@@ -14,9 +14,9 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   bool isChecked = false;
 
-  Color getColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
+  Color getColor(Set<WidgetState> states) {
+    const Set<WidgetState> interactiveStates = <WidgetState>{
+      WidgetState.pressed,
     };
     if (states.any(interactiveStates.contains)) {
       return Colors.green[300]!;
