@@ -4,8 +4,15 @@ import 'package:gene/src/authentication/auth_functions.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:gene/src/dashboard/dashboard.dart';
 
-class ThirdpartyAuth extends StatelessWidget {
+class ThirdpartyAuth extends StatefulWidget {
   const ThirdpartyAuth({super.key});
+
+  @override
+  State<ThirdpartyAuth> createState() => _ThirdpartyAuthState(); 
+}
+
+class _ThirdpartyAuthState extends State<ThirdpartyAuth> {
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -13,73 +20,84 @@ class ThirdpartyAuth extends StatelessWidget {
       children: [
         const Row(
           children: [
-            SizedBox(
-              width: 8,
-            ),
+            SizedBox(width: 8),
             Expanded(child: Divider()),
-            SizedBox(
-              width: 7,
-            ),
+            SizedBox(width: 7),
             Text('or continue with'),
-            SizedBox(
-              width: 7,
-            ),
+            SizedBox(width: 7),
             Expanded(child: Divider()),
-            SizedBox(
-              width: 8,
-            ),
+            SizedBox(width: 8),
           ],
         ),
-        const SizedBox(
-          height: 20,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            LogoButton(
-                assetPath: 'assets/logo/google-logo.svg',
-                onPressed: () {
-                  signInWithGoogle().then((credential) {
-                    if (credential != null) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Dashboard()),
-                      );
-                    } else {
-                      CoolAlert.show(
-                        context: context,
-                        type: CoolAlertType.error,
-                        text: "Google Authentication Failed!",
-                      );
-                    }
-                  });
-                }),
-            LogoButton(
-                assetPath: 'assets/logo/microsoft-logo.svg',
-                onPressed: () {
-                  signInWithMicrosoft().then((credential) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Dashboard()),
-                    );
-                  });
-                }),
-            LogoButton(
-                assetPath: 'assets/logo/apple-logo.svg',
-                onPressed: () {
-                  signInWithApple().then((credential) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Dashboard()),
-                    );
-                  });
-                }),
-          ],
-        )
+        const SizedBox(height: 20),
+        _isLoading
+            ? const CircularProgressIndicator()
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  LogoButton(
+                    assetPath: 'assets/logo/google-logo.svg',
+                    onPressed: _handleGoogleSignIn,
+                  ),
+                  LogoButton(
+                    assetPath: 'assets/logo/microsoft-logo.svg',
+                    onPressed: _handleMicrosoftSignIn,
+                  ),
+                  LogoButton(
+                    assetPath: 'assets/logo/apple-logo.svg',
+                    onPressed: _handleAppleSignIn,
+                  ),
+                ],
+              ),
       ],
     );
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    await _authenticate(signInWithGoogle, "Google");
+  }
+
+  Future<void> _handleMicrosoftSignIn() async {
+    await _authenticate(signInWithMicrosoft, "Microsoft");
+  }
+
+  Future<void> _handleAppleSignIn() async {
+    await _authenticate(signInWithApple, "Apple");
+  }
+
+  Future<void> _authenticate(
+      Future<dynamic> Function() signInMethod, String provider) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final credential = await signInMethod();
+      if (credential != null && mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Dashboard()),
+        );
+      } else if (mounted) {
+        CoolAlert.show(
+          context: context,
+          type: CoolAlertType.error,
+          text: "$provider Authentication Failed!",
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        CoolAlert.show(
+          context: context,
+          type: CoolAlertType.error,
+          text: "An error occurred during $provider sign-in.",
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 }
