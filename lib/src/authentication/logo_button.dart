@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gene/src/theme/color_code.dart';
+import '/src/theme/color_code.dart';
 
 class LogoButton extends StatelessWidget {
   final String assetPath;

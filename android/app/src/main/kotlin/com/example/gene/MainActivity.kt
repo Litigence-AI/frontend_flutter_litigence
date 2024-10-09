@@ -1,4 +1,4 @@
-package com.example.gene
+package com.lexmachina.ai
 
 import io.flutter.embedding.android.FlutterActivity
 
