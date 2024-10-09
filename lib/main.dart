@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:gene/src/blog/blog_page.dart';
+import '/src/blog/blog_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
-import 'package:gene/src/dashboard/dashboard.dart';
-import 'package:gene/src/authentication/sign_up_screen.dart';
+import '/src/dashboard/dashboard.dart';
+import '/src/authentication/sign_up_screen.dart';
 import 'src/onboarding/onboarding_screen.dart';
 
 Future<void> main() async {
@@ -41,4 +41,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
