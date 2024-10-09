@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gene/src/authentication/sign_in_screen.dart';
+import '/src/authentication/sign_in_screen.dart';
 import 'textfont_getter.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'onboarding_widget.dart';
@@ -85,7 +85,6 @@ class _OnboardScreenState extends State<OnboardScreen> {
     }
 
     return Scaffold(
-      
       body: Column(
         children: [
           Expanded(
@@ -106,7 +105,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
 }
 
 class OnboardingScreen1 extends StatelessWidget {
-  const OnboardingScreen1({super.key}) ;
+  const OnboardingScreen1({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +119,7 @@ class OnboardingScreen1 extends StatelessWidget {
 }
 
 class OnboardingScreen2 extends StatelessWidget {
-  const OnboardingScreen2({super.key}) ;
+  const OnboardingScreen2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +133,7 @@ class OnboardingScreen2 extends StatelessWidget {
 }
 
 class OnboardingScreen3 extends StatelessWidget {
-  const OnboardingScreen3({super.key}) ;
+  const OnboardingScreen3({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -170,4 +169,3 @@ class OnboardingScreen3 extends StatelessWidget {
     );
   }
 }
-
