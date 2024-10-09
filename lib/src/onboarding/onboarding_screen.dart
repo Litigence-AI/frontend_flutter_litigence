@@ -3,6 +3,7 @@ import '/src/authentication/sign_in_screen.dart';
 import 'textfont_getter.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'onboarding_widget.dart';
+import 'package:go_router/go_router.dart'; // Import GoRouter
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
@@ -111,9 +112,9 @@ class OnboardingScreen1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const OnboardingWidget(
       imagePath: 'assets/onboard/onboard_1.png',
-      title: "Meet Gen-E, your multimodal assistant 🚀",
+      title: "Meet LexMachina, your multimodal assistant 🚀",
       description:
-          "Gen-E can help you with various tasks and topics, such as processing files, translating languages, searching the web, and more.",
+          "LexMachina can help you with various tasks and topics, such as processing files, translating languages, searching the web, and more.",
     );
   }
 }
@@ -125,9 +126,9 @@ class OnboardingScreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const OnboardingWidget(
       imagePath: 'assets/onboard/onboard_2.png',
-      title: "Gen-E is smart, helpful, and versatile 🧠 ",
+      title: "LexMachina is smart, helpful, and versatile 🧠 ",
       description:
-          "Gen-E can understand your natural language and handle text, images, videos, csv, audio, word, docx, and excel files. Gen-E can also learn from your feedback and preferences to improve over time.",
+          "LexMachina can understand your natural language and handle text, images, videos, csv, audio, word, docx, and excel files. LexMachina can also learn from your feedback and preferences to improve over time.",
     );
   }
 }
@@ -141,7 +142,7 @@ class OnboardingScreen3 extends StatelessWidget {
       imagePath: 'assets/onboard/onboard_3.png',
       title: "Let’s start chatting 💬",
       description:
-          "To start a conversation with Gen-E, just type or tap on the microphone icon. To access more features and settings, tap on the menu icon on the top right corner. Tap on the button below to chat with Gen-E now.",
+          "To start a conversation with LexMachina, just type or tap on the microphone icon. To access more features and settings, tap on the menu icon on the top right corner. Tap on the button below to chat with LexMachina now.",
       child: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 15),
         child: FilledButton(
@@ -153,11 +154,12 @@ class OnboardingScreen3 extends StatelessWidget {
             minimumSize: const Size(100, 50),
           ),
           onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const SignIn(),
-              ),
-            );
+            // Navigator.of(context).pushReplacement(
+            //   // MaterialPageRoute(
+            //   //   builder: (context) => const SignIn(),
+            //   // ),
+            context.go('/signIn');
+            // );
           },
           child: CustomText(
               text: "Get Started",
