@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gene/src/authentication/thirdparty_auth.dart';
+import '/src/authentication/thirdparty_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gene/src/theme/font_weight.dart';
-import 'package:gene/src/theme/color_code.dart';
+import '/src/theme/font_weight.dart';
+import '/src/theme/color_code.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -41,7 +41,8 @@ class _SignUpState extends State<SignUp> {
                 height: 20,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
@@ -50,7 +51,8 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
