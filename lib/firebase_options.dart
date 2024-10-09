@@ -22,15 +22,8 @@ class DefaultFirebaseOptions {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
-      case TargetPlatform.iOS:
-        return ios;
-      case TargetPlatform.macOS:
-        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -44,42 +37,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyANVsGI-pcfImTIQjK6ose8qetXlrPyyyg',
-    appId: '1:1021838572230:web:6d799bd676436843e9b5c7',
-    messagingSenderId: '1021838572230',
-    projectId: 'gen-e-sustainathon',
-    authDomain: 'gen-e-sustainathon.firebaseapp.com',
-    storageBucket: 'gen-e-sustainathon.appspot.com',
-    measurementId: 'G-2H34NG1YKB',
+    apiKey: 'AIzaSyCT6uI65n8-OnnjYP7nCtbFpcYofGQ3N30',
+    appId: '1:178769607471:web:1272e7f0e21bfe0d1bbfda',
+    messagingSenderId: '178769607471',
+    projectId: 'lexmachina-ai',
+    authDomain: 'lexmachina-ai.firebaseapp.com',
+    storageBucket: 'lexmachina-ai.appspot.com',
+    measurementId: 'G-KLGRCL3916',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAhNRYe8ZzjOmrvPFC-G1EiAAQFE2E3Eo4',
-    appId: '1:1021838572230:android:8ec1c59f01788489e9b5c7',
-    messagingSenderId: '1021838572230',
-    projectId: 'gen-e-sustainathon',
-    storageBucket: 'gen-e-sustainathon.appspot.com',
+    apiKey: 'AIzaSyC-hYZvn2Cu0Ml35ol8kEmvfdUxdrSJDYc',
+    appId: '1:178769607471:android:0ef30b572aeab9721bbfda',
+    messagingSenderId: '178769607471',
+    projectId: 'lexmachina-ai',
+    storageBucket: 'lexmachina-ai.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDpS7rpnfw372vKqMP5EvyD0yUcTZROZN4',
-    appId: '1:1021838572230:ios:9d425a6df4a74137e9b5c7',
-    messagingSenderId: '1021838572230',
-    projectId: 'gen-e-sustainathon',
-    storageBucket: 'gen-e-sustainathon.appspot.com',
-    androidClientId: '1021838572230-3ngl3107gd3u7obn576n8bsa277s85ha.apps.googleusercontent.com',
-    iosClientId: '1021838572230-favtuvhmcf3dg2i5icbjenbam5s4dtki.apps.googleusercontent.com',
-    iosBundleId: 'com.example.gene',
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyCT6uI65n8-OnnjYP7nCtbFpcYofGQ3N30',
+    appId: '1:178769607471:web:ea6148bf968569711bbfda',
+    messagingSenderId: '178769607471',
+    projectId: 'lexmachina-ai',
+    authDomain: 'lexmachina-ai.firebaseapp.com',
+    storageBucket: 'lexmachina-ai.appspot.com',
+    measurementId: 'G-M3LLNCN765',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDpS7rpnfw372vKqMP5EvyD0yUcTZROZN4',
-    appId: '1:1021838572230:ios:42cb7be97aca4d40e9b5c7',
-    messagingSenderId: '1021838572230',
-    projectId: 'gen-e-sustainathon',
-    storageBucket: 'gen-e-sustainathon.appspot.com',
-    androidClientId: '1021838572230-3ngl3107gd3u7obn576n8bsa277s85ha.apps.googleusercontent.com',
-    iosClientId: '1021838572230-htkkdo3sp6qaalj250t830hjodh7pgff.apps.googleusercontent.com',
-    iosBundleId: 'com.example.gene.RunnerTests',
-  );
 }
