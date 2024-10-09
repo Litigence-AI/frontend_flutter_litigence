@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:gene/src/authentication/logo_button.dart';
-import 'package:gene/src/authentication/auth_functions.dart';
+import '/src/authentication/logo_button.dart';
+import '/src/authentication/auth_functions.dart';
 import 'package:cool_alert/cool_alert.dart';
-import 'package:gene/src/dashboard/dashboard.dart';
+import '/src/dashboard/dashboard.dart';
 
 class ThirdpartyAuth extends StatefulWidget {
   const ThirdpartyAuth({super.key});
 
   @override
-  State<ThirdpartyAuth> createState() => _ThirdpartyAuthState(); 
+  State<ThirdpartyAuth> createState() => _ThirdpartyAuthState();
 }
 
 class _ThirdpartyAuthState extends State<ThirdpartyAuth> {
@@ -43,10 +43,10 @@ class _ThirdpartyAuthState extends State<ThirdpartyAuth> {
                     assetPath: 'assets/logo/microsoft-logo.svg',
                     onPressed: _handleMicrosoftSignIn,
                   ),
-                  LogoButton(
-                    assetPath: 'assets/logo/apple-logo.svg',
-                    onPressed: _handleAppleSignIn,
-                  ),
+                  // LogoButton(
+                  //   assetPath: 'assets/logo/apple-logo.svg',
+                  //   onPressed: _handleAppleSignIn,
+                  // ),
                 ],
               ),
       ],
