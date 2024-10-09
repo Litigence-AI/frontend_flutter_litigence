@@ -1,14 +1,1 @@
-{
-  "emulators": {
-    "auth": {
-      "port": 9099
-    },
-    "firestore": {
-      "port": 8080
-    },
-    "ui": {
-      "enabled": true
-    },
-    "singleProjectMode": true
-  }
-}
+{"emulators":{"auth":{"port":9099},"firestore":{"port":8080},"ui":{"enabled":true},"singleProjectMode":true},"flutter":{"platforms":{"android":{"default":{"projectId":"lexmachina-ai","appId":"1:178769607471:android:0ef30b572aeab9721bbfda","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"lexmachina-ai","configurations":{"android":"1:178769607471:android:0ef30b572aeab9721bbfda","web":"1:178769607471:web:1272e7f0e21bfe0d1bbfda","windows":"1:178769607471:web:ea6148bf968569711bbfda"}}}}}}
