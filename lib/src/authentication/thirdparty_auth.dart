@@ -43,10 +43,10 @@ class _ThirdpartyAuthState extends State<ThirdpartyAuth> {
                     assetPath: 'assets/logo/microsoft-logo.svg',
                     onPressed: _handleMicrosoftSignIn,
                   ),
-                  LogoButton(
-                    assetPath: 'assets/logo/apple-logo.svg',
-                    onPressed: _handleAppleSignIn,
-                  ),
+                  // LogoButton(
+                  //   assetPath: 'assets/logo/apple-logo.svg',
+                  //   onPressed: _handleAppleSignIn,
+                  // ),
                 ],
               ),
       ],
