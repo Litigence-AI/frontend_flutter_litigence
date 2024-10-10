@@ -1,3 +1,4 @@
+import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lexmachina/src/authentication/sign_in_screen.dart';
@@ -24,6 +25,41 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Message> messageList = [
+      Message(
+        id: '1',
+        message: "Hi",
+        createdAt: DateTime.now(),
+        sentBy: 'user1',
+      ),
+      Message(
+        id: '2',
+        message: "Hello",
+        createdAt: DateTime.now(),
+        sentBy: 'user2',
+      ),
+    ];
+
+    final chatController = ChatController(
+      initialMessageList: messageList,
+      scrollController: ScrollController(),
+      currentUser: ChatUser(id: '1', name: 'Flutter'),
+      otherUsers: [ChatUser(id: '2', name: 'Simform')],
+    );
+
+    void onSendTap(
+        String message, ReplyMessage replyMessage, MessageType messageType) {
+      final message = Message(
+        id: '3',
+        message: "How are you",
+        createdAt: DateTime.now(),
+        sentBy: "user3",
+        replyMessage: replyMessage,
+        messageType: messageType,
+      );
+      chatController.addMessage(message);
+    }
+
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
       routes: [
@@ -46,6 +82,15 @@ class MyApp extends StatelessWidget {
         GoRoute(
           path: '/blog',
           builder: (context, state) => BlogPage(),
+        ),
+        GoRoute(
+          path: '/newChatPage',
+          builder: (context, state) => ChatView(
+            chatController: chatController,
+            onSendTap: onSendTap,
+            chatViewState: ChatViewState
+                .hasMessages, // Add this state once data is available.
+          ),
         ),
       ],
     );
