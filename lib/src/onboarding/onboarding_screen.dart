@@ -158,7 +158,7 @@ class OnboardingScreen3 extends StatelessWidget {
             //   // MaterialPageRoute(
             //   //   builder: (context) => const SignIn(),
             //   // ),
-            context.go('/signIn');
+            context.go('/chatScreen');
             // );
           },
           child: CustomText(

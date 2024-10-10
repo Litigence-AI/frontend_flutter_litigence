@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '/src/authentication/logo_button.dart';
 import '/src/authentication/auth_functions.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -73,9 +74,11 @@ class _ThirdpartyAuthState extends State<ThirdpartyAuth> {
     try {
       final credential = await signInMethod();
       if (credential != null && mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Dashboard()),
+        context.go('/dashboard');
+        CoolAlert.show(
+          context: context,
+          type: CoolAlertType.success,
+          text: "$provider Authentication Successful!",
         );
       } else if (mounted) {
         CoolAlert.show(
