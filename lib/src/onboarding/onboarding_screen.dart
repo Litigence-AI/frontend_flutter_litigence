@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '/src/authentication/sign_in_screen.dart';
 import 'textfont_getter.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'onboarding_widget.dart';

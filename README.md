@@ -1,4 +1,4 @@
-# gene
+# lexmachina
 
 A new Flutter project.
 
