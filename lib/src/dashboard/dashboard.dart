@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -25,7 +26,7 @@ class _DashboardState extends State<Dashboard> {
     try {
       await FirebaseAuth.instance.signOut().then((value) => {
                 if (mounted)
-                  {Navigator.of(context).pushReplacementNamed('/signIn')}
+                 context.go("/dashboard")
               }
           // Guard navigation with 'mounted' check
 
