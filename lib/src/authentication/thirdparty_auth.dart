@@ -1,9 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '/src/authentication/logo_button.dart';
 import '/src/authentication/auth_functions.dart';
 import 'package:cool_alert/cool_alert.dart';
 import '/src/dashboard/dashboard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 
 class ThirdpartyAuth extends StatefulWidget {
   const ThirdpartyAuth({super.key});
@@ -58,13 +62,16 @@ class _ThirdpartyAuthState extends State<ThirdpartyAuth> {
     await _authenticate(signInWithGoogle, "Google");
   }
 
-  Future<void> _handleMicrosoftSignIn() async {
-    await _authenticate(signInWithMicrosoft, "Microsoft");
+  Future<UserCredential> _handleMicrosoftSignIn() async {
+  
+  final microsoftProvider = MicrosoftAuthProvider();
+  if (kIsWeb) {
+    return await FirebaseAuth.instance.signInWithPopup(microsoftProvider);
+  } else {
+    return await FirebaseAuth.instance.signInWithProvider(microsoftProvider);
   }
 
-  Future<void> _handleAppleSignIn() async {
-    await _authenticate(signInWithApple, "Apple");
-  }
+}
 
   Future<void> _authenticate(
       Future<dynamic> Function() signInMethod, String provider) async {
