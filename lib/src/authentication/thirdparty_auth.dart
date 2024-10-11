@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '/src/authentication/logo_button.dart';
 import '/src/authentication/auth_functions.dart';
 import 'package:cool_alert/cool_alert.dart';
-import '/src/dashboard/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
