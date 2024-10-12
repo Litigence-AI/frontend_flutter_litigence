@@ -87,20 +87,8 @@ class MyApp extends StatelessWidget {
           builder: (context, state) => BlogPage(),
         ),
 
-         GoRoute(
-          path: '/chatScreen',
-          builder: (context, state) => ChatScreen(),
+      
 
-        GoRoute(
-          path: '/newChatPage',
-          builder: (context, state) => ChatView(
-            chatController: chatController,
-            onSendTap: onSendTap,
-            chatViewState: ChatViewState
-                .hasMessages, // Add this state once data is available.
-          ),
-
-        ),
       ],
     );
 
