@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lexmachina/src/dashboard/chat_page.dart';
-import 'package:lexmachina/src/dashboard/dashboard.dart';
 import 'textfont_getter.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'onboarding_widget.dart';
