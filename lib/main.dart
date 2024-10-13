@@ -1,9 +1,10 @@
 import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:lexmachina/decision.dart';
 
 import 'package:lexmachina/src/authentication/sign_in_screen.dart';
+import 'package:lexmachina/src/dashboard/chat_page.dart';
 
 import '/src/blog/blog_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,9 +24,14 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     List<Message> messageList = [
@@ -65,9 +71,15 @@ class MyApp extends StatelessWidget {
 
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
+      initialLocation: '/',
+      debugLogDiagnostics: true,
       routes: [
         GoRoute(
           path: '/',
+          builder: (context, state) => const DecisionPage(),
+        ),
+        GoRoute(
+          path: '/onboarding',
           builder: (context, state) => const OnboardScreen(),
         ),
         GoRoute(
@@ -86,9 +98,7 @@ class MyApp extends StatelessWidget {
           path: '/blog',
           builder: (context, state) => BlogPage(),
         ),
-
-      
-
+        GoRoute(path: '/chatScreen', builder: (context, state) => ChatScreen()),
       ],
     );
 
