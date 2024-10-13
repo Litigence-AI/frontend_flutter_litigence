@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:lexmachina/src/dashboard/chat_page.dart';
 import 'textfont_getter.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'onboarding_widget.dart';
 import 'package:go_router/go_router.dart'; // Import GoRouter
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
-
+  
+ 
   @override
   State<OnboardScreen> createState() => _OnboardScreenState();
 }
 
 class _OnboardScreenState extends State<OnboardScreen> {
   int _pageIndex = 0;
-
+   
   @override
   void initState() {
     super.initState();
@@ -132,9 +135,24 @@ class OnboardingScreen2 extends StatelessWidget {
   }
 }
 
-class OnboardingScreen3 extends StatelessWidget {
+class OnboardingScreen3 extends StatefulWidget {
   const OnboardingScreen3({super.key});
 
+
+  @override
+  State<OnboardingScreen3> createState() => _OnboardingScreen3State();
+}
+
+class _OnboardingScreen3State extends State<OnboardingScreen3> {
+    Future<void> _completeOnboarding(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_complete', true); // Set the flag to true
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const ChatScreen()), // Navigate to HomePage
+    );
+  } 
+ 
   @override
   Widget build(BuildContext context) {
     return OnboardingWidget(
@@ -157,7 +175,7 @@ class OnboardingScreen3 extends StatelessWidget {
             //   // MaterialPageRoute(
             //   //   builder: (context) => const SignIn(),
             //   // ),
-            context.go('/chatScreen');
+           _completeOnboarding(context);
             // );
           },
           child: CustomText(
