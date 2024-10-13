@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lexmachina/src/dashboard/chat_page.dart';
+import 'package:lexmachina/src/dashboard/dashboard.dart';
 import 'textfont_getter.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'onboarding_widget.dart';
@@ -147,10 +148,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
     Future<void> _completeOnboarding(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_complete', true); // Set the flag to true
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const ChatScreen()), // Navigate to HomePage
-    );
+      context.go('/dashboard');
   } 
  
   @override
@@ -159,7 +157,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
       imagePath: 'assets/onboard/onboard_3.png',
       title: "Let’s start chatting 💬",
       description:
-          "To start a conversation with LexMachina, just type or tap on the microphone icon. To access more features and settings, tap on the menu icon on the top right corner. Tap on the button below to chat with LexMachina now.",
+          "To start a conversation with LexMachina, . To access more features and settings.Tap on the button below to chat with LexMachina now.",
       child: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 15),
         child: FilledButton(
