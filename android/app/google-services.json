@@ -9,6 +9,43 @@
       "client_info": {
         "mobilesdk_app_id": "1:178769607471:android:0ef30b572aeab9721bbfda",
         "android_client_info": {
+          "package_name": "com.example.gene"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "178769607471-0kkavfolvcejmtja0k8dhfnlfe3rs3v5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gene",
+            "certificate_hash": "ce8fe7e572522ac129d7be88afd32f524f73e326"
+          }
+        },
+        {
+          "client_id": "178769607471-4p60g1recbohft24d65v0eoc1p61c7dp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-hYZvn2Cu0Ml35ol8kEmvfdUxdrSJDYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178769607471-4p60g1recbohft24d65v0eoc1p61c7dp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178769607471:android:1450621a0e3ec45e1bbfda",
+        "android_client_info": {
           "package_name": "com.lexmachina.ai"
         }
       },
