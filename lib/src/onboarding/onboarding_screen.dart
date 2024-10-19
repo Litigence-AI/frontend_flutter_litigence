@@ -3,17 +3,19 @@ import 'textfont_getter.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'onboarding_widget.dart';
 import 'package:go_router/go_router.dart'; // Import GoRouter
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
-
+  
+ 
   @override
   State<OnboardScreen> createState() => _OnboardScreenState();
 }
 
 class _OnboardScreenState extends State<OnboardScreen> {
   int _pageIndex = 0;
-
+   
   @override
   void initState() {
     super.initState();
@@ -132,16 +134,28 @@ class OnboardingScreen2 extends StatelessWidget {
   }
 }
 
-class OnboardingScreen3 extends StatelessWidget {
+class OnboardingScreen3 extends StatefulWidget {
   const OnboardingScreen3({super.key});
 
+
+  @override
+  State<OnboardingScreen3> createState() => _OnboardingScreen3State();
+}
+
+class _OnboardingScreen3State extends State<OnboardingScreen3> {
+    Future<void> _completeOnboarding(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_complete', true); // Set the flag to true
+      context.go('/dashboard');
+  } 
+ 
   @override
   Widget build(BuildContext context) {
     return OnboardingWidget(
       imagePath: 'assets/onboard/onboard_3.png',
       title: "Let’s start chatting 💬",
       description:
-          "To start a conversation with LexMachina, just type or tap on the microphone icon. To access more features and settings, tap on the menu icon on the top right corner. Tap on the button below to chat with LexMachina now.",
+          "To start a conversation with LexMachina, . To access more features and settings.Tap on the button below to chat with LexMachina now.",
       child: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 15),
         child: FilledButton(
@@ -157,7 +171,7 @@ class OnboardingScreen3 extends StatelessWidget {
             //   // MaterialPageRoute(
             //   //   builder: (context) => const SignIn(),
             //   // ),
-            context.go('/chatScreen');
+           _completeOnboarding(context);
             // );
           },
           child: CustomText(
