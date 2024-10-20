@@ -1,9 +1,9 @@
-import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:lexmachina/src/authentication/sign_in_screen.dart';
 import 'package:lexmachina/src/chat_ui/chat_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '/src/blog/blog_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,15 +16,22 @@ import 'package:go_router/go_router.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  final prefs = await SharedPreferences.getInstance();
+  bool isOnboardingComplete = prefs.getBool('onboarding_complete') ?? false;
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp( MyApp(
+    isOnboardingComplete: isOnboardingComplete,
+  ));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.isOnboardingComplete});
+
+  final bool isOnboardingComplete;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -33,31 +40,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    List<Message> messageList = [
-      Message(
-        id: '1',
-        message: "Hi",
-        createdAt: DateTime.now(),
-        sentBy: 'user1',
-      ),
-      Message(
-        id: '2',
-        message: "Hello",
-        createdAt: DateTime.now(),
-        sentBy: 'user2',
-      ),
-    ];
-
-    final chatController = ChatController(
-      initialMessageList: messageList,
-      scrollController: ScrollController(),
-      currentUser: ChatUser(id: '1', name: 'Flutter'),
-      otherUsers: [ChatUser(id: '2', name: 'Simform')],
-    );
 
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
-      initialLocation: '/',
+      initialLocation: widget.isOnboardingComplete ? '/chatScreen' : '/', // Ternary operator
       debugLogDiagnostics: true,
       routes: [
         GoRoute(
