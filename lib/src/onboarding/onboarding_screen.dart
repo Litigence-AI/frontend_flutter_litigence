@@ -129,7 +129,7 @@ class OnboardingScreen2 extends StatelessWidget {
       imagePath: 'assets/onboard/onboard_2.png',
       title: "LexMachina is smart, helpful, and versatile 🧠 ",
       description:
-          "LexMachina can understand your natural language and handle text, images, videos, csv, audio, word, docx, and excel files. LexMachina can also learn from your feedback and preferences to improve over time.",
+          "LexMachina can understand your natural language and handle text, images, videos, csv, audio, word, docx, and excel files.",
     );
   }
 }
@@ -146,7 +146,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
     Future<void> _completeOnboarding(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_complete', true); // Set the flag to true
-      context.go('/dashboard');
+      context.go('/chatScreen');
   } 
  
   @override
@@ -155,7 +155,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
       imagePath: 'assets/onboard/onboard_3.png',
       title: "Let’s start chatting 💬",
       description:
-          "To start a conversation with LexMachina, . To access more features and settings.Tap on the button below to chat with LexMachina now.",
+          "To start a conversation with LexMachina. Tap on the button below to chat with LexMachina now.",
       child: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 15),
         child: FilledButton(
