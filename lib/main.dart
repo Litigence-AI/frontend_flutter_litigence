@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:lexmachina/src/authentication/sign_in_screen.dart';
 import 'package:lexmachina/src/chat_ui/chat_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '/src/blog/blog_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,15 +16,22 @@ import 'package:go_router/go_router.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  final prefs = await SharedPreferences.getInstance();
+  bool isOnboardingComplete = prefs.getBool('onboarding_complete') ?? false;
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp( MyApp(
+    isOnboardingComplete: isOnboardingComplete,
+  ));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.isOnboardingComplete});
+
+  final bool isOnboardingComplete;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -35,7 +43,7 @@ class _MyAppState extends State<MyApp> {
 
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
-      initialLocation: '/',
+      initialLocation: widget.isOnboardingComplete ? '/chatScreen' : '/', // Ternary operator
       debugLogDiagnostics: true,
       routes: [
         GoRoute(
