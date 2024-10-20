@@ -48,13 +48,6 @@ class _MyAppState extends State<MyApp> {
       ),
     ];
 
-    final chatController = ChatController(
-      initialMessageList: messageList,
-      scrollController: ScrollController(),
-      currentUser: ChatUser(id: '1', name: 'Flutter'),
-      otherUsers: [ChatUser(id: '2', name: 'Simform')],
-    );
-
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
       initialLocation: '/',
