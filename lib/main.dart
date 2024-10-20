@@ -1,4 +1,3 @@
-import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -33,20 +32,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    List<Message> messageList = [
-      Message(
-        id: '1',
-        message: "Hi",
-        createdAt: DateTime.now(),
-        sentBy: 'user1',
-      ),
-      Message(
-        id: '2',
-        message: "Hello",
-        createdAt: DateTime.now(),
-        sentBy: 'user2',
-      ),
-    ];
 
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
