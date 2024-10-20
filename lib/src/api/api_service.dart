@@ -1,27 +1,29 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-import 'dart:io';
+// import 'dart:io';
 
-Future<String> _loadImageAsBase64(String path) async {
-  File imagefile = File(path); //convert Path to File
-  Uint8List imagebytes = await imagefile.readAsBytes(); //convert to bytes
-  String base64string =
-      base64.encode(imagebytes); //convert bytes to base64 string
-  if (kDebugMode) {
-    print(base64string);
-  }
-  return base64string;
-}
+// Future<String> _loadImageAsBase64(String path) async {
+//   File imagefile = File(path); //convert Path to File
+//   Uint8List imagebytes = await imagefile.readAsBytes(); //convert to bytes
+//   String base64string =
+//       base64.encode(imagebytes); //convert bytes to base64 string
+//   if (kDebugMode) {
+//     print(base64string);
+//   }
+//   return base64string;
+// }
 
 Future<String> sendMessage(String userMessage) async {
-  String imageBase64 = await _loadImageAsBase64('assets/img.png');
-  if (kDebugMode) {
-    print('Image Base64: $imageBase64');
-  }
-  String content =
-      '$userMessage <img src="data:image/png;base64,$imageBase64"  alt=""/>';
+  // String imageBase64 = await _loadImageAsBase64('assets/img.png');
+  // if (kDebugMode) {
+  //   print('Image Base64: $imageBase64');
+  // }
+  // String content =
+  //     '$userMessage <img src="data:image/png;base64,$imageBase64"  alt=""/>';
+
+  String content =  '$userMessage ';
 
   var headers = {
     'Authorization':
