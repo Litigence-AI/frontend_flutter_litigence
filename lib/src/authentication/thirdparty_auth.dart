@@ -80,7 +80,7 @@ class _ThirdpartyAuthState extends State<ThirdpartyAuth> {
     try {
       final credential = await signInMethod();
       if (credential != null && mounted) {
-        context.go('/dashboard');
+        context.go('/chatScreen');
         CoolAlert.show(
           context: context,
           type: CoolAlertType.success,
