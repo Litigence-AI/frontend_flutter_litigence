@@ -49,3 +49,4 @@ pubspec.lock
 lib/firebase_options.dart
 
 .env
+my-release-key.jks
