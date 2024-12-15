@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lexmachina/chat_ui/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dashboard_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class GoogleAuthScreen extends StatefulWidget {
   const GoogleAuthScreen({super.key});
@@ -15,6 +15,19 @@ class GoogleAuthScreen extends StatefulWidget {
 
 class _GoogleAuthScreenState extends State<GoogleAuthScreen> {
   Future<void> signInWithGoogle() async {
+    if (kIsWeb) {
+      GoogleAuthProvider googleProvider = GoogleAuthProvider();
+      try {
+        final UserCredential userCredential = await FirebaseAuth.instance.signInWithPopup(googleProvider);
+        // Handle successful sign-in
+        context.go('/chatScreen');
+      } on FirebaseAuthException catch (e) {
+        // Handle errors
+        print(e);
+      }
+      return;
+    }
+
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -38,10 +51,7 @@ class _GoogleAuthScreenState extends State<GoogleAuthScreen> {
         await prefs.setString('userEmail', userCredential.user!.email!);
         await prefs.setString('userName', userCredential.user!.displayName!);
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const ChatScreen()),
-        );
+        context.go('/chatScreen');
       }
     } catch (e) {
       if (kDebugMode) {
