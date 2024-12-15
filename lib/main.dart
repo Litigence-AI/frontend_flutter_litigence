@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 // import 'package:firebase_core/firebase_core.dart';
 
 // import 'package:lexmachina/src/authentication/sign_in_screen.dart';
-import 'package:lexmachina/src/chat_ui/chat_screen.dart';
+import '../chat_ui/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '/src/blog/blog_page.dart';
+import '../blog/blog_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'firebase_options.dart';
 // import '/src/dashboard/dashboard.dart';
 // import '/src/authentication/sign_up_screen.dart';
-import 'src/onboarding/onboarding_screen.dart';
+import '../onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 
 Future<void> main() async {
