@@ -23,7 +23,7 @@ class OnboardingWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        const SizedBox(height: 40), // Add SizedBox
+        const SizedBox(height: 40),
         Image.asset(imagePath),
         CustomText(
           text: title,
