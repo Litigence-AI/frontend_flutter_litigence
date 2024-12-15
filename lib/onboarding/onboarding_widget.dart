@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/src/onboarding/textfont_getter.dart';
+import '/onboarding/textfont_getter.dart';
 
 class OnboardingWidget extends StatelessWidget {
   final String imagePath;
