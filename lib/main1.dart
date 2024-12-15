@@ -3,7 +3,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as dotenv;
-import 'src/pages/chat_page.dart';
+import '../pages/chat_page.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
