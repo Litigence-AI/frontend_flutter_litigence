@@ -113,9 +113,9 @@ class OnboardingScreen1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const OnboardingWidget(
       imagePath: 'assets/onboard/onboard_1.png',
-      title: "Meet LexMachina, your multimodal assistant 🚀",
+      title: "Meet LexMachine ⚖️",
       description:
-          "LexMachina can help you with various tasks and topics, such as processing files, translating languages, searching the web, and more.",
+          "Welcome to LexMachine, your AI-powered legal assistant. Designed for India, it simplifies law, provides accurate insights, and empowers you to make informed decisions.",
     );
   }
 }
@@ -127,9 +127,9 @@ class OnboardingScreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const OnboardingWidget(
       imagePath: 'assets/onboard/onboard_2.png',
-      title: "LexMachina is smart, helpful, and versatile 🧠 ",
+      title: "Multilingual & User-Friendly 🌐",
       description:
-          "LexMachina can understand your natural language and handle text, images, videos, csv, audio, word, docx, and excel files.",
+          "Access legal information in your preferred language. LexMachine breaks down complex legal terms into simple, actionable insights for everyone.",
     );
   }
 }
@@ -153,9 +153,9 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
   Widget build(BuildContext context) {
     return OnboardingWidget(
       imagePath: 'assets/onboard/onboard_3.png',
-      title: "Let’s start chatting 💬",
+      title: "Your Trusted Legal Partner 🔒",
       description:
-          "To start a conversation with LexMachina. Tap on the button below to chat with LexMachina now.",
+          "From personal queries to professional research, LexMachine offers secure, reliable guidance backed by authentic sources. Your privacy is always our priority.",
       child: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 15),
         child: FilledButton(
