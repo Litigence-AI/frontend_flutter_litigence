@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:lexmachina/src/dashboard/dashboard.dart';
-import 'package:lexmachina/src/onboarding/onboarding_screen.dart';
+import '../dashboard/dashboard.dart';
+import '../onboarding/onboarding_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
