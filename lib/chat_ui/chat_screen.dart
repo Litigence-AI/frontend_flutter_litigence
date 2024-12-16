@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../api/api_service.dart';
+import '../services/nvdia_service.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
