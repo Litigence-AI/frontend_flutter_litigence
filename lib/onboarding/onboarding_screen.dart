@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'onboarding_widget.dart';
-import 'textfont_getter.dart';
 import 'onboarding_pages.dart'; // Import the new split file
 
 class OnboardScreen extends StatefulWidget {

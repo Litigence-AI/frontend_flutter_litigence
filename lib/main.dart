@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
 
   String getInitialLocation(bool isOnboardingComplete, bool isAuthenticated) {
     if (isOnboardingComplete) {
-      return isAuthenticated ? '/chatScreen' : '/signIn';
+      return isAuthenticated ? '/chatScreen' : '/gauth';
     } else {
       return '/';
     }
