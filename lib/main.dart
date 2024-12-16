@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 // import 'package:lexmachina/src/authentication/sign_in_screen.dart';
-import 'package:lexmachina/src/chat_ui/chat_screen.dart';
+import '../chat_ui/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '/src/blog/blog_page.dart';
+import '../blog/blog_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'firebase_options.dart';
+import 'authentication/google_auth/google_auth_screen.dart';
+import 'firebase_options.dart';
 // import '/src/dashboard/dashboard.dart';
 // import '/src/authentication/sign_up_screen.dart';
-import 'src/onboarding/onboarding_screen.dart';
+import '../onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 
 Future<void> main() async {
@@ -18,33 +19,49 @@ Future<void> main() async {
 
   final prefs = await SharedPreferences.getInstance();
   bool isOnboardingComplete = prefs.getBool('onboarding_complete') ?? false;
+  bool isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
 
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    debugPrint("Firebase Initialization Error: $e");
+  }
 
-  runApp( MyApp(
+  runApp(MyApp(
     isOnboardingComplete: isOnboardingComplete,
+    isAuthenticated: isAuthenticated,
   ));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key, required this.isOnboardingComplete});
+  const MyApp({super.key, required this.isOnboardingComplete, required this.isAuthenticated});
 
   final bool isOnboardingComplete;
+  final bool isAuthenticated;
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+
+
+  String getInitialLocation(bool isOnboardingComplete, bool isAuthenticated) {
+    if (isOnboardingComplete) {
+      return isAuthenticated ? '/chatScreen' : '/gauth';
+    } else {
+      return '/';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
-      initialLocation: widget.isOnboardingComplete ? '/chatScreen' : '/', // Ternary operator
-      debugLogDiagnostics: true,
+    initialLocation: getInitialLocation(widget.isOnboardingComplete, widget.isAuthenticated),      debugLogDiagnostics: true,
       routes: [
         GoRoute(
           path: '/',
@@ -62,6 +79,7 @@ class _MyAppState extends State<MyApp> {
         //   path: '/signUp',
         //   builder: (context, state) => const SignUp(),
         // ),
+        GoRoute(path: '/gauth', builder: ( context, state ) => GoogleAuthScreen()),
         GoRoute(
           path: '/blog',
           builder: (context, state) => BlogPage(),
