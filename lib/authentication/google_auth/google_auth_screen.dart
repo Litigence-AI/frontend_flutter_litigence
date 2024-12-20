@@ -14,7 +14,26 @@ class GoogleAuthScreen extends StatefulWidget {
 }
 
 class _GoogleAuthScreenState extends State<GoogleAuthScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfUserIsLoggedIn();
+  }
+
+  Future<void> _checkIfUserIsLoggedIn() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // User is already signed in
+      context.go('/chatScreen');
+    }
+  }
+
   Future<void> signInWithGoogle() async {
+
+    _checkIfUserIsLoggedIn();
+
     if (kIsWeb) {
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
       try {

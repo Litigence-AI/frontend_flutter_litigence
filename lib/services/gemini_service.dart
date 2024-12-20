@@ -1,16 +1,24 @@
 import 'dart:convert'; // For JSON encoding/decoding
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http; // Dart HTTP client
-import 'package:flutter_dotenv/flutter_dotenv.dart' as dotenv;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GeminiService {
-  late String backendUrl;
+  String backendUrl = '';
 
   // Initializes the service by loading the backend URL and validating it
   Future<void> initialize() async {
+
+    print('gemini init called');
+
+    if (kDebugMode) {
+      print('gemini init called kdebug');
+    }
+
     // Load backend URL from environment variables
-    backendUrl = dotenv.dotenv.env['BACKEND_URL'] ??
-        '';
+    backendUrl = await dotenv.env['BACKEND_URL'] ??'';
+
+    print('Loaded backend URL: $backendUrl');
 
     if (backendUrl.isEmpty) {
       throw Exception('Backend URL is not configured.');

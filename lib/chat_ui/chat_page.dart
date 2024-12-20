@@ -29,13 +29,26 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> _initializeGemini() async {
+  int retryCount = 0;
+  const int maxRetries = 10;
+  const Duration retryDelay = Duration(seconds: 2);
+
+  while (retryCount < maxRetries) {
     try {
       await _geminiService.initialize();
       setState(() => _isGeminiInitialized = true);
+      return;
     } catch (e) {
-      setState(() => _initError = e.toString());
+      retryCount++;
+      if (retryCount >= maxRetries) {
+        setState(() => _initError = '$e Failed to initialize after $maxRetries attempts.');
+        print('Initialization error: $e');
+      } else {
+        await Future.delayed(retryDelay);
+      }
     }
   }
+}
 
   void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
