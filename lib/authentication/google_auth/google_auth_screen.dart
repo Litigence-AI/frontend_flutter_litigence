@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lexmachina/chat_ui/chat_screen.dart';
+// import 'package:lexmachina/chat_ui/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,7 +37,9 @@ class _GoogleAuthScreenState extends State<GoogleAuthScreen> {
     if (kIsWeb) {
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
       try {
-        final UserCredential userCredential = await FirebaseAuth.instance.signInWithPopup(googleProvider);
+        await FirebaseAuth.instance.signInWithPopup(googleProvider);
+        // final UserCredential userCredential = await FirebaseAuth.instance.signInWithPopup(googleProvider);
+
         // Handle successful sign-in
         context.go('/chatScreen');
       } on FirebaseAuthException catch (e) {
