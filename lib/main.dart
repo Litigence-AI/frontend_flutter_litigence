@@ -8,14 +8,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../blog/blog_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'authentication/google_auth/google_auth_screen.dart';
+
+import 'chat_ui/chat_page.dart';
 import 'firebase_options.dart';
 // import '/src/dashboard/dashboard.dart';
 // import '/src/authentication/sign_up_screen.dart';
 import '../onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
 
   final prefs = await SharedPreferences.getInstance();
   bool isOnboardingComplete = prefs.getBool('onboarding_complete') ?? false;
@@ -48,6 +52,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
 
+
+
   String getInitialLocation(bool isOnboardingComplete, bool isAuthenticated) {
     if (isOnboardingComplete) {
       return isAuthenticated ? '/chatScreen' : '/gauth';
@@ -58,6 +64,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
+    String GEMINI_API_KEY = dotenv.get('GEMINI_API_KEY');
+
+    print("${GEMINI_API_KEY}");
 
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
@@ -86,7 +96,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GoRoute(
           path: '/chatScreen',
-          builder: (context, state) => ChatScreen(),
+          builder: (context, state) => ChatPage(),
         ),
       ],
     );
