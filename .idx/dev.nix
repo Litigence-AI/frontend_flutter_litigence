@@ -4,10 +4,9 @@
     pkgs.nodePackages.firebase-tools
     pkgs.jdk17
     pkgs.unzip
+    pkgs.flutter
   ];
-  idx.extensions = [
-    
-  ];
+  idx.extensions = [];
   idx.previews = {
     previews = {
       web = {
@@ -21,6 +20,8 @@
           "0.0.0.0"
           "--web-port"
           "$PORT"
+          "--dart-define"
+          "BACKEND_URL=https://backend-fastapi-gemini-lexmachina-916007394186.asia-south1.run.app"
         ];
         manager = "flutter";
       };
@@ -33,6 +34,8 @@
           "android"
           "-d"
           "emulator-5554"
+          "--dart-define"
+          "BACKEND_URL=https://backend-fastapi-gemini-lexmachina-916007394186.asia-south1.run.app"
         ];
         manager = "flutter";
       };
