@@ -52,3 +52,4 @@ lib/firebase_options.dart
 my-release-key.jks
 debug.keystore
 .firebase/
+android/.kotlin/sessions/kotlin-compiler-440959573953299424.salive
