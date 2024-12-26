@@ -1,10 +1,13 @@
 {pkgs}: {
   channel = "stable-23.11";
-  packages = [
+   packages = [
+    (pkgs.flutter.override {
+      version = "3.27.1";
+      hash = "sha256-0mz7K6QA9zZZvz/+2/X5Zr2Vx9+Yy+cEBQKvx9MHCA="; # Latest Flutter hash
+    })
     pkgs.nodePackages.firebase-tools
     pkgs.jdk17
     pkgs.unzip
-    pkgs.flutter
   ];
   idx.extensions = [];
   idx.previews = {
