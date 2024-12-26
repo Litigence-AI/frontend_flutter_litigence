@@ -51,4 +51,4 @@ lib/firebase_options.dart
 .env
 my-release-key.jks
 debug.keystore
-.firebase/.*
+.firebase/
