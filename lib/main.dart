@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../blog/blog_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'authentication/google_auth/google_auth_screen.dart';
+// import 'authentication/google_auth/google_auth_screen.dart';
 
 import 'chat_ui/chat_page.dart';
 import 'firebase_options.dart';
@@ -23,7 +23,9 @@ Future<void> main() async {
 
   final prefs = await SharedPreferences.getInstance();
   bool isOnboardingComplete = prefs.getBool('onboarding_complete') ?? false;
-  bool isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
+  // bool isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
+
+  bool isAuthenticated = true;
 
   try {
     await Firebase.initializeApp(
@@ -89,7 +91,7 @@ class _MyAppState extends State<MyApp> {
         //   path: '/signUp',
         //   builder: (context, state) => const SignUp(),
         // ),
-        GoRoute(path: '/gauth', builder: ( context, state ) => GoogleAuthScreen()),
+        // GoRoute(path: '/gauth', builder: ( context, state ) => GoogleAuthScreen()),
         GoRoute(
           path: '/blog',
           builder: (context, state) => BlogPage(),
