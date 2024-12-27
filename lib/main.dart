@@ -23,7 +23,9 @@ Future<void> main() async {
 
   final prefs = await SharedPreferences.getInstance();
   bool isOnboardingComplete = prefs.getBool('onboarding_complete') ?? false;
-  bool isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
+  // bool isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
+
+  bool isAuthenticated = true;
 
   try {
     await Firebase.initializeApp(
@@ -89,7 +91,7 @@ class _MyAppState extends State<MyApp> {
         //   path: '/signUp',
         //   builder: (context, state) => const SignUp(),
         // ),
-        GoRoute(path: '/gauth', builder: ( context, state ) => GoogleAuthScreen()),
+        // GoRoute(path: '/gauth', builder: ( context, state ) => GoogleAuthScreen()),
         GoRoute(
           path: '/blog',
           builder: (context, state) => BlogPage(),
