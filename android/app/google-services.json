@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:198846245506:android:4a30b4068535480ea6e29b",
         "android_client_info": {
-          "package_name": "com.litigation.ai"
+          "package_name": "com.litigence.ai"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "198846245506-14nhhkl46b9gq9qavtm3t53emiualb92.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.litigation.ai",
+            "package_name": "com.litigence.ai",
             "certificate_hash": "d99f5b8774d004eeeb9b52624465e46eb43a3ff6"
           }
         },
