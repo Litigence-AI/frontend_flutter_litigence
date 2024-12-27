@@ -1,4 +1,4 @@
-package com.litigation.ai
+package com.litigence.ai
 
 import io.flutter.embedding.android.FlutterActivity
 
