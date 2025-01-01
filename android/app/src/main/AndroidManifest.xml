@@ -4,7 +4,7 @@
 
     <application
         android:enableOnBackInvokedCallback="true"
-        android:label="Letigence "
+        android:label="litigence"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
