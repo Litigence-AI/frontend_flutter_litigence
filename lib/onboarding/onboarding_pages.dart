@@ -11,9 +11,9 @@ class OnboardingScreen1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const OnboardingWidget(
       imagePath: 'assets/onboard/onboard_1.png',
-      title: "Meet LexMachina, your multimodal assistant 🚀",
+      title: "Meet Litigence AI, your multimodal assistant 🚀",
       description:
-      "LexMachina can help you with various tasks and topics, such as processing files, translating languages, searching the web, and more.",
+      "Litigence AI can help you with various tasks and topics, such as processing files, translating languages, searching the web, and more.",
     );
   }
 }
@@ -25,9 +25,9 @@ class OnboardingScreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const OnboardingWidget(
       imagePath: 'assets/onboard/onboard_2.png',
-      title: "LexMachina is smart, helpful, and versatile 🧠",
+      title: "Litigence AI is smart, helpful, and versatile 🧠",
       description:
-      "LexMachina can understand your natural language and handle text, images, videos, csv, audio, word, docx, and excel files.",
+      "Litigence AI can understand your natural language and handle text, images, videos, csv, audio, word, docx, and excel files.",
     );
   }
 }
@@ -52,7 +52,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
       imagePath: 'assets/onboard/onboard_3.png',
       title: "Let’s start chatting 💬",
       description:
-      "To start a conversation with LexMachina. Tap on the button below to chat with LexMachina now.",
+      "To start a conversation with Litigence AI. Tap on the button below to chat with Litigence AI now.",
       child: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 15),
         child: FilledButton(
