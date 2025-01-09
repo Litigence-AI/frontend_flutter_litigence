@@ -1,48 +1,42 @@
 import 'package:flutter/material.dart';
-import 'onboarding_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
-import 'textfont_getter.dart';
+import 'onboarding_widget.dart';
+import '../../utils/size_config.dart';
+import 'package:Litigence/onboarding/textfont_getter.dart';
 
 class OnboardingScreen1 extends StatelessWidget {
-  const OnboardingScreen1({super.key});
+  const OnboardingScreen1({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const OnboardingWidget(
       imagePath: 'assets/onboard/onboard_1.png',
       title: "Meet Litigence AI, your multimodal assistant 🚀",
-      description:
-      "Litigence AI can help you with various tasks and topics, such as processing files, translating languages, searching the web, and more.",
+      description: "Litigence AI can help you with various tasks and topics.",
     );
   }
 }
 
 class OnboardingScreen2 extends StatelessWidget {
-  const OnboardingScreen2({super.key});
+  const OnboardingScreen2({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const OnboardingWidget(
       imagePath: 'assets/onboard/onboard_2.png',
       title: "Litigence AI is smart, helpful, and versatile 🧠",
-      description:
-      "Litigence AI can understand your natural language and handle text, images, videos, csv, audio, word, docx, and excel files.",
+      description: "Handle text, images, videos, and various file formats.",
     );
   }
 }
 
-class OnboardingScreen3 extends StatefulWidget {
-  const OnboardingScreen3({super.key});
+class OnboardingScreen3 extends StatelessWidget {
+  const OnboardingScreen3({Key? key}) : super(key: key);
 
-  @override
-  State<OnboardingScreen3> createState() => _OnboardingScreen3State();
-}
-
-class _OnboardingScreen3State extends State<OnboardingScreen3> {
   Future<void> _completeOnboarding(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('onboarding_complete', true); // Set the flag to true
+    await prefs.setBool('onboarding_complete', true);
     context.go('/chatScreen');
   }
 
@@ -50,27 +44,30 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
   Widget build(BuildContext context) {
     return OnboardingWidget(
       imagePath: 'assets/onboard/onboard_3.png',
-      title: "Let’s start chatting 💬",
-      description:
-      "To start a conversation with Litigence AI. Tap on the button below to chat with Litigence AI now.",
+      title: "Let's start chatting 💬",
+      description: "Tap the button below to start chatting with Litigence AI.",
       child: Padding(
-        padding: const EdgeInsets.only(top: 10, bottom: 15),
-        child: FilledButton(
+        padding: EdgeInsets.symmetric(
+          vertical: SizeConfig.getProportionalScreenHeight(15),
+        ),
+        child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFE0AC94),
+            backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.getProportionalScreenWidth(30),
+              vertical: SizeConfig.getProportionalScreenHeight(15),
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            minimumSize: const Size(100, 50),
           ),
-          onPressed: () {
-            _completeOnboarding(context);
-          },
+          onPressed: () => _completeOnboarding(context),
           child: CustomText(
-              text: "Get Started",
-              context: context,
-              fontWeight: FontWeight.w600,
-              fontSize: 16),
+            context: context,
+            text: "Get Started",
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
