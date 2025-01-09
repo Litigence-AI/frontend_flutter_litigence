@@ -99,6 +99,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp.router(
       title: 'Litigence AI',
       theme: ThemeData(
+        fontFamily: 'Roboto',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
         textTheme: GoogleFonts.interTextTheme(
