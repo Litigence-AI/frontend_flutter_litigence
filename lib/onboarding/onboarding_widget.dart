@@ -40,7 +40,8 @@ class OnboardingWidget extends StatelessWidget {
                     SizedBox(height: SizeConfig.getProportionalScreenHeight(20)),
                     // Image with responsive sizing
                     SizedBox(
-                      height: SizeConfig.getProportionalScreenHeight(250),
+                      height: SizeConfig.getProportionalScreenHeight(300),
+                      // TODO: Make image scale horizontally up
                       child: Image.asset(
                         imagePath,
                         fit: BoxFit.contain,
