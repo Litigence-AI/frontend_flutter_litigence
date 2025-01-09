@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '/onboarding/textfont_getter.dart';
+
+import 'textfont_getter.dart';
+import '../utils/size_config.dart';
 
 class OnboardingWidget extends StatelessWidget {
   final String imagePath;
@@ -17,33 +19,61 @@ class OnboardingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget? localChild = child;
-    localChild ??= Container();
+    // Initialize SizeConfig
+    SizeConfig().init(context);
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        const SizedBox(height: 40),
-        Image.asset(imagePath),
-        CustomText(
-          text: title,
-          context: context,
-          fontWeight: FontWeight.w700,
-          fontSize: 29,
-          textAlign: TextAlign.center,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: CustomText(
-            text: description,
-            context: context,
-            fontWeight: FontWeight.w400,
-            fontSize: 20.99,
-            textAlign: TextAlign.center,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.getProportionalScreenWidth(20),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(height: SizeConfig.getProportionalScreenHeight(20)),
+                    // Image with responsive sizing
+                    SizedBox(
+                      height: SizeConfig.getProportionalScreenHeight(250),
+                      child: Image.asset(
+                        imagePath,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    SizedBox(height: SizeConfig.getProportionalScreenHeight(20)),
+                    // Title with responsive text
+                    CustomText(
+                      text: title,
+                      context: context,
+                      fontWeight: FontWeight.w700,
+                      fontSize: SizeConfig.getProportionalScreenWidth(24),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: SizeConfig.getProportionalScreenHeight(20)),
+                    // Description with responsive text
+                    CustomText(
+                      text: description,
+                      context: context,
+                      fontWeight: FontWeight.w400,
+                      fontSize: SizeConfig.getProportionalScreenWidth(16),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: SizeConfig.getProportionalScreenHeight(20)),
+                    if (child != null) child!,
+                    SizedBox(height: SizeConfig.getProportionalScreenHeight(20)),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
-        localChild,
-      ],
+        );
+      },
     );
   }
 }
