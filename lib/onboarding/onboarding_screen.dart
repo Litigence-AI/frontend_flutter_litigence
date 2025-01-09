@@ -37,6 +37,16 @@ class _OnboardScreenState extends State<OnboardScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    final screenWidth = MediaQuery.of(context).size.width; // Store screen width in a variable
+
+    // Clamp dot width between minimum and maximum values
+    final double dotWidth = screenWidth * 0.015;
+    final double activeDotWidth = screenWidth * 0.03;
+    final double minDotWidth = 6.5;
+    final double maxDotWidth = 12.0;
+
+    final double clampedDotWidth = dotWidth.clamp(minDotWidth, maxDotWidth);
+    final double clampedActiveDotWidth = activeDotWidth.clamp(minDotWidth, maxDotWidth);
 
     return Scaffold(
       body: SafeArea(
@@ -66,13 +76,12 @@ class _OnboardScreenState extends State<OnboardScreen> {
                       dotsCount: 3,
                       position: _pageIndex,
                       decorator: DotsDecorator(
-                        size: Size.square(SizeConfig.getProportionalScreenWidth(9)),
-                        activeSize: Size(
-                          SizeConfig.getProportionalScreenWidth(18),
-                          SizeConfig.getProportionalScreenWidth(9),
-                        ),
-                        // activeColor: const Color(0xFFE0AC94),
-                        activeColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
+                        size: Size.square(clampedDotWidth), // Use clamped width for size
+                        activeSize: Size(clampedActiveDotWidth, clampedDotWidth),
+                        activeColor: Theme.of(context)
+                            .buttonTheme
+                            .colorScheme
+                            ?.primaryContainer,
                         color: Colors.white,
                         shape: const CircleBorder(
                           side: BorderSide(width: 1.0, color: Colors.black),
@@ -102,8 +111,6 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   );
                 },
                 shape: const CircleBorder(),
-                // backgroundColor: const Color(0xFFE0AC94),
-                // foregroundColor: const Color(0xFFF5EAE5),
                 child: const Icon(Icons.arrow_forward),
               ),
             )
