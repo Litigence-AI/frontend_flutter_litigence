@@ -54,8 +54,8 @@ class OnboardingScreen3 extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
             padding: EdgeInsets.symmetric(
-              horizontal: SizeConfig.getProportionalScreenWidth(30),
-              vertical: SizeConfig.getProportionalScreenHeight(15),
+              horizontal: SizeConfig.getProportionalScreenWidth(40),
+              vertical: SizeConfig.getProportionalScreenHeight(25),
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
