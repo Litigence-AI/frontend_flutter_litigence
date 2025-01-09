@@ -64,10 +64,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-    //String GEMINI_API_KEY = dotenv.get('GEMINI_API_KEY');
-
-    // print("${GEMINI_API_KEY}");
-
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
     initialLocation: getInitialLocation(widget.isOnboardingComplete, widget.isAuthenticated),      debugLogDiagnostics: true,
@@ -101,7 +97,7 @@ class _MyAppState extends State<MyApp> {
     );
 
     return MaterialApp.router(
-      title: 'LexMachina',
+      title: 'Litigence AI',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
