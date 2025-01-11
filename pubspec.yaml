@@ -41,6 +41,10 @@ dependencies:
   chatview: ^2.2.0
   firebase_crashlytics: any
   flutter_firebase_chat_core: any
+  pinput: ^5.0.0
+  easy_container: ^1.0.5
+  intl_phone_field: ^3.2.0
+  firebase_phone_auth_handler: any
 
 dev_dependencies:
   flutter_test:
