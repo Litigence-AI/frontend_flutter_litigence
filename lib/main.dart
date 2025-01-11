@@ -1,3 +1,4 @@
+import 'package:Litigence/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,7 +55,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String getInitialLocation(bool isOnboardingComplete, bool isAuthenticated) {
     if (isOnboardingComplete) {
-      return isAuthenticated ? '/chatScreen' : '/gauth'; 
+      return isAuthenticated ? '/chatScreen' : '/authScreen'; 
     } else {
       return '/';
     }
@@ -73,6 +74,18 @@ class _MyAppState extends State<MyApp> {
           path: '/',
           builder: (context, state) => const OnboardScreen(),
         ),
+        GoRoute(
+          path: '/blog',
+          builder: (context, state) => BlogPage(),
+        ),
+        GoRoute(
+          path: '/chatScreen',
+          builder: (context, state) => ChatPage(),
+        ),
+        GoRoute(
+          path: '/authScreen',
+          builder: (context, state) => AuthScreen(),
+        ),
         // GoRoute(
         //   path: '/dashboard',
         //   builder: (context, state) => const Dashboard(),
@@ -85,15 +98,11 @@ class _MyAppState extends State<MyApp> {
         //   path: '/signUp',
         //   builder: (context, state) => const SignUp(),
         // ),
-        // GoRoute(path: '/gauth', builder: ( context, state ) => GoogleAuthScreen()),
-        GoRoute(
-          path: '/blog',
-          builder: (context, state) => BlogPage(),
-        ),
-        GoRoute(
-          path: '/chatScreen',
-          builder: (context, state) => ChatPage(),
-        ),
+        // GoRoute(
+        //  path: '/gauth', 
+        //  builder: ( context, state ) => GoogleAuthScreen()
+        // ),
+
       ],
     );
 
