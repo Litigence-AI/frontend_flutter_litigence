@@ -8,16 +8,8 @@ import 'firebase_options.dart';
 import '../onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 
-// import 'package:lexmachina/src/authentication/sign_in_screen.dart';
-// import '../chat_ui/chat_screen.dart';
-// import 'authentication/google_auth/google_auth_screen.dart';
-// import '/src/dashboard/dashboard.dart';
-// import '/src/authentication/sign_up_screen.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await dotenv.load(fileName: ".env");
 
   final prefs = await SharedPreferences.getInstance();
   bool isOnboardingComplete = prefs.getBool('onboarding_complete') ?? false;
@@ -86,22 +78,6 @@ class _MyAppState extends State<MyApp> {
           path: '/authScreen',
           builder: (context, state) => AuthScreen(),
         ),
-        // GoRoute(
-        //   path: '/dashboard',
-        //   builder: (context, state) => const Dashboard(),
-        // ),
-        // GoRoute(
-        //   path: '/signIn',
-        //   builder: (context, state) => const SignIn(),
-        // ),
-        // GoRoute(
-        //   path: '/signUp',
-        //   builder: (context, state) => const SignUp(),
-        // ),
-        // GoRoute(
-        //  path: '/gauth', 
-        //  builder: ( context, state ) => GoogleAuthScreen()
-        // ),
 
       ],
     );
