@@ -65,7 +65,6 @@ class _MyAppState extends State<MyApp> {
           path: '/',
           builder: (context, state) => const OnboardScreen(),
         ),
-
         GoRoute(
           path: '/chatScreen',
           builder: (context, state) => ChatPage(),
@@ -74,7 +73,6 @@ class _MyAppState extends State<MyApp> {
           path: '/authScreen',
           builder: (context, state) => AuthScreen(),
         ),
-
       ],
     );
 
