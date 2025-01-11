@@ -22,7 +22,7 @@
           "--web-port"
           "$PORT"
           "--dart-define"
-          "BACKEND_URL=https://backend-fastapi-gemini-lexmachina-916007394186.asia-south1.run.app"
+          "BACKEND_URL=https://litigence-ai-backend-916007394186.asia-south1.run.app"
         ];
         manager = "flutter";
       };
@@ -36,7 +36,7 @@
           "-d"
           "emulator-5554"
           "--dart-define"
-          "BACKEND_URL=https://backend-fastapi-gemini-lexmachina-916007394186.asia-south1.run.app"
+          "BACKEND_URL=https://litigence-ai-backend-916007394186.asia-south1.run.app"
         ];
         manager = "flutter";
       };
