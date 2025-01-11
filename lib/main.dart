@@ -2,7 +2,6 @@ import 'package:Litigence/authentication/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../blog/blog_page.dart';
 import 'chat_ui/chat_page.dart';
 import 'firebase_options.dart';
 import '../onboarding/onboarding_screen.dart';
@@ -66,10 +65,7 @@ class _MyAppState extends State<MyApp> {
           path: '/',
           builder: (context, state) => const OnboardScreen(),
         ),
-        GoRoute(
-          path: '/blog',
-          builder: (context, state) => BlogPage(),
-        ),
+
         GoRoute(
           path: '/chatScreen',
           builder: (context, state) => ChatPage(),
