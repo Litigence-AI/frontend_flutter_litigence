@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class AuthScreen extends StatelessWidget {
+  const AuthScreen({super.key});
 
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
@@ -61,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/google_logo.png',
+                      'assets/logo/google.png',
                       height: 24,
                     ),
                     const SizedBox(width: 12),
