@@ -9,6 +9,7 @@ import '../onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import 'otp_auth/home_screen.dart';
+import 'otp_auth/splash_screen.dart';
 import 'otp_auth/verify_phone_screen.dart';
 
 Future<void> main() async {
@@ -61,8 +62,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
-      initialLocation: getInitialLocation(
-          widget.isOnboardingComplete, widget.isAuthenticated),
+      // initialLocation: getInitialLocation(
+      //     widget.isOnboardingComplete, widget.isAuthenticated),
+      initialLocation: '/splashScreen',
       debugLogDiagnostics: true,
       // TODO: Remove DebugLogs
       routes: [
@@ -90,6 +92,9 @@ class _MyAppState extends State<MyApp> {
           path: '/homeScreen',
           builder: (context, state) => const HomeScreen(),
         ),
+        GoRoute(path: '/splashScreen',
+             builder: (context, state) => SplashScreen(),
+            ),
       ],
     );
 

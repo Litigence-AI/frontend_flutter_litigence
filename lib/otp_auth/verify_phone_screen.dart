@@ -64,6 +64,9 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
 
   @override
   Widget build(BuildContext context) {
+
+    print('VerifyPhoneNumberScreen: ${widget.phoneNumber}');
+
     return SafeArea(
       child: FirebasePhoneAuthHandler(
         phoneNumber: widget.phoneNumber,
