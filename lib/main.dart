@@ -1,4 +1,5 @@
 import 'package:Litigence/authentication/login_screen.dart';
+import 'package:Litigence/otp_auth/authentication_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,7 +68,8 @@ class _MyAppState extends State<MyApp> {
         ),
         GoRoute(
           path: '/chatScreen',
-          builder: (context, state) => ChatPage(),
+          // builder: (context, state) => ChatPage(),
+          builder: (context, state) => const AuthenticationScreen(),
         ),
         GoRoute(
           path: '/authScreen',
