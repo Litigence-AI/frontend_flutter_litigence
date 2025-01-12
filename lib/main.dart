@@ -1,5 +1,5 @@
 import 'package:Litigence/authentication/login_screen.dart';
-import 'package:Litigence/otp_auth/authentication_screen.dart';
+import 'package:Litigence/otp_auth/otp_auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +7,9 @@ import 'chat_ui/chat_page.dart';
 import 'firebase_options.dart';
 import '../onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
+
+import 'otp_auth/home_screen.dart';
+import 'otp_auth/verify_phone_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +50,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String getInitialLocation(bool isOnboardingComplete, bool isAuthenticated) {
     if (isOnboardingComplete) {
-      return isAuthenticated ? '/chatScreen' : '/authScreen'; 
+      return isAuthenticated ? '/chatScreen' : '/authScreen';
+      // TODO: revert to chatScreen after otp test
     } else {
       return '/';
     }
@@ -69,11 +73,22 @@ class _MyAppState extends State<MyApp> {
         GoRoute(
           path: '/chatScreen',
           // builder: (context, state) => ChatPage(),
-          builder: (context, state) => const AuthenticationScreen(),
+          builder: (context, state) => const ChatPage(),
         ),
         GoRoute(
           path: '/authScreen',
           builder: (context, state) => AuthScreen(),
+        ),
+        GoRoute(path: '/otpAuthScreen', builder: (context, state) => OtpAuth()),
+        GoRoute(
+          path: '/verifyPhoneNumberScreen',
+          builder: (context, state) => VerifyPhoneNumberScreen(
+            phoneNumber: state.extra as String,
+          ),
+        ),
+        GoRoute(
+          path: '/homeScreen',
+          builder: (context, state) => const HomeScreen(),
         ),
       ],
     );
@@ -86,8 +101,8 @@ class _MyAppState extends State<MyApp> {
             ),
         primaryTextTheme: const TextTheme().apply(
           fontFamily: 'Roboto',
-        ),    
-      ), 
+        ),
+      ),
       routerConfig: _router, // Use router instead of routes
     );
   }
