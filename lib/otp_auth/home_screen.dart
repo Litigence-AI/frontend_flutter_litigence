@@ -1,7 +1,7 @@
 import 'package:easy_container/easy_container.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
-import '../otp_auth/authentication_screen.dart';
+import 'package:go_router/go_router.dart';
 import '/utils/globals.dart';
 import '/utils/helpers.dart';
 
@@ -41,11 +41,7 @@ class HomeScreen extends StatelessWidget {
                   showSnackBar('Logged out successfully!');
 
                   if (context.mounted) {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      AuthenticationScreen.id,
-                      (route) => false,
-                    );
+                    context.go('/otpAuthScreen');
                   }
                 },
                 child: const Text('Logout'),
