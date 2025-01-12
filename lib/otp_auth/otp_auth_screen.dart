@@ -4,7 +4,6 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import '/utils/helpers.dart';
 
 class OtpAuth extends StatefulWidget {
-  static const id = 'AuthenticationScreen';
 
   const OtpAuth({super.key});
 
@@ -102,7 +101,13 @@ class _OtpAuthState extends State<OtpAuth> {
                           !_formKey.currentState!.validate()) {
                         showSnackBar('Please enter a valid phone number!');
                       } else {
-                        context.go('/verifyPhoneNumberScreen');
+                        if (!mounted) return;
+
+                        context.go(
+                            '/verifyPhoneNumberScreen',
+                          extra: phoneNumber
+                        );
+
                       }
                     },
                     child: const Text(
