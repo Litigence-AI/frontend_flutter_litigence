@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../otp_auth/authentication_screen.dart';
+import '../otp_auth/otp_auth_screen.dart';
 import '../otp_auth/home_screen.dart';
 import '../utils/globals.dart';
 import '../widgets/custom_loader.dart';
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (!mounted) return;
       Navigator.pushReplacementNamed(
         context,
-        isLoggedIn ? HomeScreen.id : AuthenticationScreen.id,
+        isLoggedIn ? HomeScreen.id : OtpAuth.id,
       );
     })();
     super.initState();

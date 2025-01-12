@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import '../otp_auth/verify_phone_number_screen.dart';
 import '/utils/helpers.dart';
 
-class AuthenticationScreen extends StatefulWidget {
+class OtpAuth extends StatefulWidget {
   static const id = 'AuthenticationScreen';
 
-  const AuthenticationScreen({super.key});
+  const OtpAuth({super.key});
 
   @override
-  State<AuthenticationScreen> createState() => _AuthenticationScreenState();
+  State<OtpAuth> createState() => _OtpAuthState();
 }
 
-class _AuthenticationScreenState extends State<AuthenticationScreen> {
+class _OtpAuthState extends State<OtpAuth> {
   String? phoneNumber;
 
   final _formKey = GlobalKey<FormState>();
@@ -102,11 +102,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           !_formKey.currentState!.validate()) {
                         showSnackBar('Please enter a valid phone number!');
                       } else {
-                        Navigator.pushNamed(
-                          context,
-                          VerifyPhoneNumberScreen.id,
-                          arguments: phoneNumber,
-                        );
+                        context.go('/verifyPhoneNumberScreen');
                       }
                     },
                     child: const Text(
