@@ -9,18 +9,55 @@
       "client_info": {
         "mobilesdk_app_id": "1:198846245506:android:4a30b4068535480ea6e29b",
         "android_client_info": {
-          "package_name": "com.litigence.ai"
+          "package_name": "com.lexmachina.ai"
         }
       },
       "oauth_client": [
         {
-          "client_id": "198846245506-14nhhkl46b9gq9qavtm3t53emiualb92.apps.googleusercontent.com",
+          "client_id": "198846245506-602e7ah74fuaiim9fkmlgp1i79ouqk7e.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.litigence.ai",
-            "certificate_hash": "d99f5b8774d004eeeb9b52624465e46eb43a3ff6"
+            "package_name": "com.lexmachina.ai",
+            "certificate_hash": "ce8fe7e572522ac129d7be88afd32f524f73e326"
           }
         },
+        {
+          "client_id": "198846245506-d5pbqiej5jgjdcbbiptsguanjprvb68a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lexmachina.ai",
+            "certificate_hash": "e1a61fccf5faad1b285b76e500f7876d2fc04677"
+          }
+        },
+        {
+          "client_id": "198846245506-0scgdj3prfnt8abpd793v3e7ikb0rdk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNobImr_jrmYn9nBXNgakU5167_dt_V-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198846245506-0scgdj3prfnt8abpd793v3e7ikb0rdk1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198846245506:android:c9f4b2cbbaae234fa6e29b",
+        "android_client_info": {
+          "package_name": "com.litigence.ai"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "198846245506-0scgdj3prfnt8abpd793v3e7ikb0rdk1.apps.googleusercontent.com",
           "client_type": 3
