@@ -89,6 +89,13 @@ class _OtpAuthState extends State<OtpAuth> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
+                      textStyle: TextStyle(
+                        color: Theme.of(context).buttonTheme.colorScheme?.onPrimaryContainer, // Set the text color
+                        fontSize: 18, // Set the text size
+                        fontFamily: 'Roboto', // Set the font family
+                        fontWeight: FontWeight.bold, // Set the font weight
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

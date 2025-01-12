@@ -123,7 +123,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
         },
         builder: (context, controller) {
           return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.onPrimary,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             body: controller.isSendingCode
                 ? Center(
                     child: Column(
@@ -188,6 +188,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                             ),
                           const SizedBox(height: 30),
                           PinInputField(
+                          
                             length: 6,
                             onFocusChange: (hasFocus) async {
                               if (hasFocus)
