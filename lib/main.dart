@@ -1,5 +1,6 @@
 import 'package:Litigence/authentication/login_screen.dart';
 import 'package:Litigence/otp_auth/otp_auth_screen.dart';
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -98,17 +99,20 @@ class _MyAppState extends State<MyApp> {
       ],
     );
 
-    return MaterialApp.router(
-      title: 'Litigence AI',
-      theme: ThemeData.dark(useMaterial3: true).copyWith(
-        textTheme: ThemeData.dark(useMaterial3: true).textTheme.apply(
-              fontFamily: 'Roboto',
-            ),
-        primaryTextTheme: const TextTheme().apply(
-          fontFamily: 'Roboto',
+    return FirebasePhoneAuthProvider(
+      child: MaterialApp.router(
+        title: 'Litigence AI',
+        theme: ThemeData.dark(useMaterial3: true).copyWith(
+          textTheme: ThemeData.dark(useMaterial3: true).textTheme.apply(
+                fontFamily: 'Roboto',
+              ),
+          primaryTextTheme: const TextTheme().apply(
+            fontFamily: 'Roboto',
+          ),
         ),
+        routerConfig: _router, // Use router instead of routes
       ),
-      routerConfig: _router, // Use router instead of routes
     );
   }
 }
+
