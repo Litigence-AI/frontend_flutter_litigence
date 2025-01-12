@@ -36,7 +36,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/otp_verification_image.jpg',
+                    'assets/otp_verification_image.png',
                     width: 170,
                     height: 170,
                   ),
@@ -52,7 +52,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    "We will send you one-time password to your mobile number",
+                    "We will send you one-time password to you mobile number",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
