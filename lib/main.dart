@@ -1,4 +1,4 @@
-import 'package:Litigence/authentication/login_screen.dart';
+import 'package:Litigence/authentication/auth_screen.dart';
 import 'package:Litigence/otp_auth/otp_auth_screen.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +18,7 @@ Future<void> main() async {
 
   final prefs = await SharedPreferences.getInstance();
   bool isOnboardingComplete = prefs.getBool('onboarding_complete') ?? false;
-  // bool isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
-
-  bool isAuthenticated = true;
+  bool isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
 
   try {
     await Firebase.initializeApp(
