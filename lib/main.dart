@@ -1,5 +1,6 @@
 import 'package:Litigence/authentication/auth_screen.dart';
 import 'package:Litigence/otp_auth/otp_auth_screen.dart';
+import 'package:Litigence/utils/globals.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,7 +19,6 @@ Future<void> main() async {
 
   final prefs = await SharedPreferences.getInstance();
   bool isOnboardingComplete = prefs.getBool('onboarding_complete') ?? false;
-  bool isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
 
   try {
     await Firebase.initializeApp(
@@ -30,50 +30,51 @@ Future<void> main() async {
 
   runApp(MyApp(
     isOnboardingComplete: isOnboardingComplete,
-    isAuthenticated: isAuthenticated,
   ));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp(
-      {super.key,
-      required this.isOnboardingComplete,
-      required this.isAuthenticated});
+  const MyApp({super.key, required this.isOnboardingComplete});
 
   final bool isOnboardingComplete;
-  final bool isAuthenticated;
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String getInitialLocation(bool isOnboardingComplete, bool isAuthenticated) {
-    if (isOnboardingComplete) {
-      return isAuthenticated ? '/chatScreen' : '/authScreen';
-      // TODO: revert to chatScreen after otp test
-    } else {
-      return '/';
-    }
+  String root = '';
+
+  @override
+  void initState() {
+    (() async {
+      await Future.delayed(Duration.zero);
+      final isLoggedIn = Globals.firebaseUser != null;
+
+      if (widget.isOnboardingComplete == false) {
+        root = '/onboardingScreen';
+      } else {
+        root = (isLoggedIn ? '/chatScreen' : '/authScreen');
+      }
+    })();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     // Define your GoRouter here
     final GoRouter _router = GoRouter(
-      // initialLocation: getInitialLocation(
-      //     widget.isOnboardingComplete, widget.isAuthenticated),
-      initialLocation: '/splashScreen',
+      initialLocation: root,
+
       debugLogDiagnostics: true,
       // TODO: Remove DebugLogs
       routes: [
         GoRoute(
-          path: '/',
+          path: '/onboardScreen',
           builder: (context, state) => const OnboardScreen(),
         ),
         GoRoute(
           path: '/chatScreen',
-          // builder: (context, state) => ChatPage(),
           builder: (context, state) => const ChatPage(),
         ),
         GoRoute(
@@ -91,9 +92,10 @@ class _MyAppState extends State<MyApp> {
           path: '/homeScreen',
           builder: (context, state) => const HomeScreen(),
         ),
-        GoRoute(path: '/splashScreen',
-             builder: (context, state) => SplashScreen(),
-            ),
+        GoRoute(
+          path: '/splashScreen',
+          builder: (context, state) => SplashScreen(),
+        ),
       ],
     );
 
@@ -113,4 +115,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
