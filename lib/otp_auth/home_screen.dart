@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -36,6 +36,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               EasyContainer(
+                color: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
                 onTap: () async {
                   await FirebasePhoneAuthHandler.signOut(context);
                   showSnackBar('Logged out successfully!');
