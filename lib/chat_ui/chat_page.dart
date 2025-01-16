@@ -29,26 +29,27 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> _initializeGemini() async {
-  int retryCount = 0;
-  const int maxRetries = 10;
-  const Duration retryDelay = Duration(seconds: 2);
+    int retryCount = 0;
+    const int maxRetries = 10;
+    const Duration retryDelay = Duration(seconds: 2);
 
-  while (retryCount < maxRetries) {
-    try {
-      await _geminiService.initialize();
-      setState(() => _isGeminiInitialized = true);
-      return;
-    } catch (e) {
-      retryCount++;
-      if (retryCount >= maxRetries) {
-        setState(() => _initError = '$e Failed to initialize after $maxRetries attempts.');
-        print('Initialization error: $e');
-      } else {
-        await Future.delayed(retryDelay);
+    while (retryCount < maxRetries) {
+      try {
+        await _geminiService.initialize();
+        setState(() => _isGeminiInitialized = true);
+        return;
+      } catch (e) {
+        retryCount++;
+        if (retryCount >= maxRetries) {
+          setState(() => _initError =
+              '$e Failed to initialize after $maxRetries attempts.');
+          print('Initialization error: $e');
+        } else {
+          await Future.delayed(retryDelay);
+        }
       }
     }
   }
-}
 
   void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
@@ -115,7 +116,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleSendPressed(types.PartialText message) async { 
+  void _handleSendPressed(types.PartialText message) async {
     final textMessage = types.TextMessage(
       author: ChatUsers.currentUser,
       createdAt: DateTime.now().millisecondsSinceEpoch,
@@ -162,10 +163,42 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Indian Legal AI Assistant'),
-        bottom: _isAITyping ? const PreferredSize(
-          preferredSize: Size.fromHeight(4.0),
-          child: LinearProgressIndicator(),
-        ) : null,
+        bottom: _isAITyping
+            ? const PreferredSize(
+                preferredSize: Size.fromHeight(4.0),
+                child: LinearProgressIndicator(),
+              )
+            : null,
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: const [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(title: Text('Home')),
+            ListTile(title: Text('Home1')),
+            ListTile(title: Text('Home2')),
+          ],
+        ),
       ),
       body: Chat(
         messages: _messages,
