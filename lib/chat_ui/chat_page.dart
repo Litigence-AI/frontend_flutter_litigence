@@ -1,6 +1,9 @@
+import 'package:Litigence/utils/helpers.dart';
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 
 import '../models/chat_users.dart';
@@ -187,7 +190,7 @@ class _ChatPageState extends State<ChatPage> {
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
-          children: const [
+          children: [
             DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
@@ -197,6 +200,22 @@ class _ChatPageState extends State<ChatPage> {
             ListTile(title: Text('Home')),
             ListTile(title: Text('Home1')),
             ListTile(title: Text('Home2')),
+            ElevatedButton(
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
+                ),
+
+                onPressed : () async {
+                  await FirebasePhoneAuthHandler.signOut(context);
+                  showSnackBar('Logged out successfully!');
+
+                  if (context.mounted) {
+                    context.go('/authScreen');
+                  }
+                },
+                child: const Text('Logout'),
+              ),
           ],
         ),
       ),
