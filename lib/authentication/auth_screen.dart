@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -82,6 +83,7 @@ class AuthScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   // Implement Phone Number Sign In
+                  context.go('/otpAuthScreen');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
