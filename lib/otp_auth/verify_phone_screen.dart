@@ -93,7 +93,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
             msg: 'Login Success UID: ${userCredential.user?.uid}',
           );
 
-          context.go('/homeScreen');
+          context.go('/chatScreen');
         },
         onLoginFailed: (authException, stackTrace) {
           verify_phone_number_screen.log(
