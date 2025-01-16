@@ -43,7 +43,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String root = '';
+  String root = '/onboardScreen';
 
   @override
   void initState() {
@@ -51,11 +51,9 @@ class _MyAppState extends State<MyApp> {
       await Future.delayed(Duration.zero);
       final isLoggedIn = Globals.firebaseUser != null;
 
-      if (widget.isOnboardingComplete == false) {
-        root = '/onboardingScreen';
-      } else {
-        root = (isLoggedIn ? '/chatScreen' : '/authScreen');
-      }
+      if (!widget.isOnboardingComplete) return;
+
+      root = (isLoggedIn ? '/chatScreen' : '/authScreen');
     })();
     super.initState();
   }

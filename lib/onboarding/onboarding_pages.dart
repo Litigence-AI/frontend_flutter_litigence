@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
+import '../utils/globals.dart';
 import 'onboarding_widget.dart';
 import '../../utils/size_config.dart';
 import 'package:Litigence/onboarding/textfont_getter.dart';
@@ -31,13 +32,33 @@ class OnboardingScreen2 extends StatelessWidget {
   }
 }
 
-class OnboardingScreen3 extends StatelessWidget {
+class OnboardingScreen3 extends StatefulWidget {
   const OnboardingScreen3({Key? key}) : super(key: key);
 
+  @override
+  State<OnboardingScreen3> createState() => _OnboardingScreen3State();
+}
+
+class _OnboardingScreen3State extends State<OnboardingScreen3> {
+
+    String root = '/onboardScreen';
+
+    @override
+  void initState() {
+
+    (() async {
+      await Future.delayed(Duration.zero);
+      final isLoggedIn = Globals.firebaseUser != null;
+
+      root = (isLoggedIn ? '/chatScreen' : '/authScreen');
+    })();
+    super.initState();
+  }
+  
   Future<void> _completeOnboarding(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_complete', true);
-    context.go('/chatScreen');
+    context.go( root );
   }
 
   @override
