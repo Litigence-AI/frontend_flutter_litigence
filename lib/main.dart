@@ -1,4 +1,5 @@
 import 'package:Litigence/authentication/auth_screen.dart';
+import 'package:Litigence/authentication/google_auth/google_auth_screen.dart';
 import 'package:Litigence/otp_auth/otp_auth_screen.dart';
 import 'package:Litigence/utils/globals.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
@@ -10,8 +11,6 @@ import 'firebase_options.dart';
 import '../onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 
-import 'otp_auth/home_screen.dart';
-import 'otp_auth/splash_screen.dart';
 import 'otp_auth/verify_phone_screen.dart';
 
 Future<void> main() async {
@@ -77,23 +76,23 @@ class _MyAppState extends State<MyApp> {
         ),
         GoRoute(
           path: '/authScreen',
-          builder: (context, state) => AuthScreen(),
+          builder: (context, state) => const AuthScreen(),
         ),
-        GoRoute(path: '/otpAuthScreen', builder: (context, state) => OtpAuth()),
+        GoRoute(
+          path: '/otpAuthScreen', 
+          builder: (context, state) => const OtpAuth()
+        ),
+        GoRoute(
+          path: '/googleAuthScreen', 
+          builder: (context, state) => const GoogleAuthScreen()
+        ),
         GoRoute(
           path: '/verifyPhoneNumberScreen',
           builder: (context, state) => VerifyPhoneNumberScreen(
             phoneNumber: state.extra as String,
           ),
         ),
-        GoRoute(
-          path: '/homeScreen',
-          builder: (context, state) => const HomeScreen(),
-        ),
-        GoRoute(
-          path: '/splashScreen',
-          builder: (context, state) => SplashScreen(),
-        ),
+
       ],
     );
 
