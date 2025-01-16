@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import '../otp_auth/otp_auth_screen.dart';
-import '../otp_auth/home_screen.dart';
+import 'package:go_router/go_router.dart';
 import '../utils/globals.dart';
 import '../widgets/custom_loader.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const id = 'SplashScreen';
 
   const SplashScreen({super.key});
 
@@ -21,10 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
       final isLoggedIn = Globals.firebaseUser != null;
 
       if (!mounted) return;
-      Navigator.pushReplacementNamed(
-        context,
-        isLoggedIn ? HomeScreen.id : OtpAuth.id,
-      );
+      context.go(isLoggedIn ? '/homeScreen' : '/otpAuthScreen');
     })();
     super.initState();
   }

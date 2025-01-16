@@ -1,9 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -12,9 +22,82 @@ class AuthScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _checkIfUserIsLoggedIn();
+  }
+
+  Future<void> _checkIfUserIsLoggedIn() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // User is already signed in
+      context.go('/chatScreen');
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    _checkIfUserIsLoggedIn();
+
+    if (kIsWeb) {
+      GoogleAuthProvider googleProvider = GoogleAuthProvider();
+      try {
+        await FirebaseAuth.instance.signInWithPopup(googleProvider);
+        // final UserCredential userCredential = await FirebaseAuth.instance.signInWithPopup(googleProvider);
+
+        // Handle successful sign-in
+        context.go('/chatScreen');
+      } on FirebaseAuthException catch (e) {
+        // Handle errors
+        print(e);
+      }
+      return;
+    }
+
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser == null) {
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      if (mounted && userCredential.user != null) {
+        // Store authenticated status and account details in SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isAuthenticated', true);
+        await prefs.setString('userEmail', userCredential.user!.email!);
+        await prefs.setString('userName', userCredential.user!.displayName!);
+
+        context.go('/chatScreen');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error signing in with Google: $e');
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to sign in: $e')),
+        );
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -46,9 +129,7 @@ class AuthScreen extends StatelessWidget {
 
               // Google Sign In Button
               ElevatedButton(
-                onPressed: () {
-                  // Implement Google Sign In
-                },
+                onPressed: signInWithGoogle,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
@@ -82,6 +163,7 @@ class AuthScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   // Implement Phone Number Sign In
+                  context.go('/otpAuthScreen');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,

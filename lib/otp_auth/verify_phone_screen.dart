@@ -64,6 +64,9 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
 
   @override
   Widget build(BuildContext context) {
+
+    print('VerifyPhoneNumberScreen: ${widget.phoneNumber}');
+
     return SafeArea(
       child: FirebasePhoneAuthHandler(
         phoneNumber: widget.phoneNumber,
@@ -90,7 +93,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
             msg: 'Login Success UID: ${userCredential.user?.uid}',
           );
 
-          context.go('/homeScreen');
+          context.go('/chatScreen');
         },
         onLoginFailed: (authException, stackTrace) {
           verify_phone_number_screen.log(
@@ -120,7 +123,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
         },
         builder: (context, controller) {
           return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.onPrimary,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             body: controller.isSendingCode
                 ? Center(
                     child: Column(
@@ -185,6 +188,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                             ),
                           const SizedBox(height: 30),
                           PinInputField(
+                          
                             length: 6,
                             onFocusChange: (hasFocus) async {
                               if (hasFocus)

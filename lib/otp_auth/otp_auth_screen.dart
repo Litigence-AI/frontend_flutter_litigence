@@ -4,7 +4,6 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import '/utils/helpers.dart';
 
 class OtpAuth extends StatefulWidget {
-  static const id = 'AuthenticationScreen';
 
   const OtpAuth({super.key});
 
@@ -90,7 +89,13 @@ class _OtpAuthState extends State<OtpAuth> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
+                      textStyle: TextStyle(
+                        color: Theme.of(context).buttonTheme.colorScheme?.onPrimaryContainer, // Set the text color
+                        fontSize: 18, // Set the text size
+                        fontFamily: 'Roboto', // Set the font family
+                        fontWeight: FontWeight.bold, // Set the font weight
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -102,7 +107,13 @@ class _OtpAuthState extends State<OtpAuth> {
                           !_formKey.currentState!.validate()) {
                         showSnackBar('Please enter a valid phone number!');
                       } else {
-                        context.go('/verifyPhoneNumberScreen');
+                        if (!mounted) return;
+
+                        context.go(
+                            '/verifyPhoneNumberScreen',
+                          extra: phoneNumber
+                        );
+
                       }
                     },
                     child: const Text(

@@ -77,7 +77,20 @@ class _PinInputFieldState extends State<PinInputField> {
   @override
   Widget build(BuildContext context) {
     final size = _findContainerSize(context);
-    final defaultPinTheme = _getPinTheme(context, size: size);
+    // final defaultPinTheme = _getPinTheme(context, size: size);
+
+    final defaultPinTheme = PinTheme(
+      width: 45,
+      height: 45,
+      textStyle: TextStyle(
+          fontSize: 15,
+          color: Theme.of(context).colorScheme.onSurface,
+          fontWeight: FontWeight.w600),
+      decoration: BoxDecoration(
+        border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+        borderRadius: BorderRadius.circular(10),
+      ),
+    );
 
     return SizedBox(
       height: size.height * _focusScaleFactor,
@@ -88,7 +101,8 @@ class _PinInputFieldState extends State<PinInputField> {
           height: size.height * _focusScaleFactor,
           width: size.width * _focusScaleFactor,
           decoration: defaultPinTheme.decoration!.copyWith(
-            border: Border.all(color: Theme.of(context).colorScheme.secondary),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
         ),
         errorPinTheme: defaultPinTheme.copyWith(

@@ -1,6 +1,9 @@
+import 'package:Litigence/utils/helpers.dart';
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 
 import '../models/chat_users.dart';
@@ -29,26 +32,27 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> _initializeGemini() async {
-  int retryCount = 0;
-  const int maxRetries = 10;
-  const Duration retryDelay = Duration(seconds: 2);
+    int retryCount = 0;
+    const int maxRetries = 10;
+    const Duration retryDelay = Duration(seconds: 2);
 
-  while (retryCount < maxRetries) {
-    try {
-      await _geminiService.initialize();
-      setState(() => _isGeminiInitialized = true);
-      return;
-    } catch (e) {
-      retryCount++;
-      if (retryCount >= maxRetries) {
-        setState(() => _initError = '$e Failed to initialize after $maxRetries attempts.');
-        print('Initialization error: $e');
-      } else {
-        await Future.delayed(retryDelay);
+    while (retryCount < maxRetries) {
+      try {
+        await _geminiService.initialize();
+        setState(() => _isGeminiInitialized = true);
+        return;
+      } catch (e) {
+        retryCount++;
+        if (retryCount >= maxRetries) {
+          setState(() => _initError =
+              '$e Failed to initialize after $maxRetries attempts.');
+          print('Initialization error: $e');
+        } else {
+          await Future.delayed(retryDelay);
+        }
       }
     }
   }
-}
 
   void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
@@ -115,7 +119,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleSendPressed(types.PartialText message) async { 
+  void _handleSendPressed(types.PartialText message) async {
     final textMessage = types.TextMessage(
       author: ChatUsers.currentUser,
       createdAt: DateTime.now().millisecondsSinceEpoch,
@@ -162,10 +166,58 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Indian Legal AI Assistant'),
-        bottom: _isAITyping ? const PreferredSize(
-          preferredSize: Size.fromHeight(4.0),
-          child: LinearProgressIndicator(),
-        ) : null,
+        bottom: _isAITyping
+            ? const PreferredSize(
+                preferredSize: Size.fromHeight(4.0),
+                child: LinearProgressIndicator(),
+              )
+            : null,
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(title: Text('Home')),
+            ListTile(title: Text('Home1')),
+            ListTile(title: Text('Home2')),
+            ElevatedButton(
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
+                ),
+
+                onPressed : () async {
+                  await FirebasePhoneAuthHandler.signOut(context);
+                  showSnackBar('Logged out successfully!');
+
+                  if (context.mounted) {
+                    context.go('/authScreen');
+                  }
+                },
+                child: const Text('Logout'),
+              ),
+          ],
+        ),
       ),
       body: Chat(
         messages: _messages,
