@@ -62,7 +62,7 @@ class _AuthScreenState extends State<AuthScreen> {
       }
 
       final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -70,7 +70,7 @@ class _AuthScreenState extends State<AuthScreen> {
       );
 
       UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
 
       if (mounted && userCredential.user != null) {
         // Store authenticated status and account details in SharedPreferences
@@ -96,137 +96,137 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double textSize = screenWidth > 800 ? 32 : screenWidth > 600 ? 28 : 24;
+    double paddingSize = screenWidth > 800 ? 32.0 : 24.0;
+    double buttonWidth = screenWidth > 800 ? 150 : 100;
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Time status bar (9:41) would be handled by the system
-
-              // Logo and Lady Justice image
-              Image.asset(
-                'assets/lady_justice.png',
-                height: 120,
-              ),
-
-              const SizedBox(height: 24),
-
-              // Title text
-              const Text(
-                'Bridging knowledge gaps\nfor a fairer world',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const SizedBox(height: 48),
-
-              // Google Sign In Button
-              ElevatedButton(
-                onPressed: signInWithGoogle,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/logo/google.png',
-                      height: 24,
-                    ),
-                    const SizedBox(width: 12),
-                    const Text(
-                      'Continue with Google',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Phone Number Button
-              ElevatedButton(
-                onPressed: () {
-                  // Implement Phone Number Sign In
-                  context.go('/otpAuthScreen');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.phone_android,
-                      size: 24,
-                      color: Color.fromARGB(217, 14, 14, 14),
-                    ),
-                    SizedBox(width: 12),
-                    Text(
-                      'Continue with Phone number',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const Spacer(),
-
-              // Footer links
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: screenWidth > 800 ? 600 : 400),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: paddingSize),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      _launchURL(
-                          'https://litigence-ai.github.io/privacy-policy/');
-                    },
-                    child: const Text(
-                      'Privacy policy',
-                      style: TextStyle(
-                        color: Colors.white70,
-                      ),
+                  Text(
+                    'Litigence AI',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: textSize,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(width: 24),
-                  TextButton(
-                    onPressed: () {
-                      _launchURL(
-                          'https://litigence-ai.github.io/Terms-of-service/');
-                    },
-                    child: const Text(
-                      'Terms of service',
-                      style: TextStyle(
-                        color: Colors.white70,
-                      ),
+                  Image.asset(
+                    'assets/lady_justice.png',
+                    height: screenWidth > 800 ? 160 : 120,
+                  ),
+                  Text(
+                    'Bridging knowledge gaps\nfor a fairer world',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: textSize,
+                      fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: signInWithGoogle,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          minimumSize: Size(buttonWidth, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/logo/google.png',
+                              height: 24,
+                            ),
+                            const SizedBox(width: 12),
+                            const Text(
+                              'Continue with Google',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.go('/otpAuthScreen');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          minimumSize: Size(buttonWidth, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.phone_android,
+                              size: 24,
+                              color: Color.fromARGB(217, 14, 14, 14),
+                            ),
+                            SizedBox(width: 12),
+                            Text(
+                              'Continue with Phone number',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          _launchURL(
+                              'https://litigence-ai.github.io/privacy-policy/');
+                        },
+                        child: const Text(
+                          'Privacy policy',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+                      TextButton(
+                        onPressed: () {
+                          _launchURL(
+                              'https://litigence-ai.github.io/Terms-of-service/');
+                        },
+                        child: const Text(
+                          'Terms of service',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
