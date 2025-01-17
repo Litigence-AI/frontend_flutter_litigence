@@ -94,6 +94,8 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -233,3 +235,4 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
+
