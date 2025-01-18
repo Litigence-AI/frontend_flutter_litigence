@@ -1,4 +1,4 @@
-# Gemini Chat App
+# Legal Chat App
 
 [![Platform](https://img.shields.io/badge/Platform-Flutter-blue.svg)](https://flutter.dev/)
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](https://developer.android.com/)
