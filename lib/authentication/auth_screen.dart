@@ -98,10 +98,10 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double textSize = screenWidth > 800 ? 32 : screenWidth > 600 ? 28 : 24;
-    double paddingSize = screenWidth > 800 ? 32.0 : 24.0;
-    double buttonWidth = screenWidth > 800 ? 150 : 100;
+    // double screenWidth = MediaQuery.of(context).size.width;
+  // double textSize = screenWidth > 800 ? 32 : screenWidth > 600 ? 28 : 24;
+  // double paddingSize = screenWidth > 800 ? 32.0 : 24.0;
+  // double buttonWidth = screenWidth > 800 ? 150 : 100;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
