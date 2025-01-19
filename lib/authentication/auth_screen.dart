@@ -62,7 +62,7 @@ class _AuthScreenState extends State<AuthScreen> {
       }
 
       final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -70,7 +70,7 @@ class _AuthScreenState extends State<AuthScreen> {
       );
 
       UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
 
       if (mounted && userCredential.user != null) {
         // Store authenticated status and account details in SharedPreferences
@@ -94,8 +94,15 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double textSize = screenWidth > 800 ? 32 : screenWidth > 600 ? 28 : 24;
+    double paddingSize = screenWidth > 800 ? 32.0 : 24.0;
+    double buttonWidth = screenWidth > 800 ? 150 : 100;
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
@@ -242,3 +249,4 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
+
