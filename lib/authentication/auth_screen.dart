@@ -107,35 +107,43 @@ class _AuthScreenState extends State<AuthScreen> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Center(
+          // Ensures the content is centered on larger screens
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: screenWidth > 800 ? 600 : 400),
+            constraints: const BoxConstraints(maxWidth: 400),
+            // Limit the width for web
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: paddingSize),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
+                 // crossAxisAlignment: CrossAxisAlignment.spacebetween,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
-                    'Litigence AI',
-                    textAlign: TextAlign.center,
+
+                  const Text(
+                    "Litigence AI",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: textSize,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+
+                  // Logo and Lady Justice image
+
                   Image.asset(
                     'assets/lady_justice.png',
-                    height: screenWidth > 800 ? 160 : 120,
+                    height: 120,
                   ),
-                  Text(
+
+                  const Text(
                     'Bridging knowledge gaps\nfor a fairer world',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: textSize,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+
                   Column(
                     children: [
                       ElevatedButton(
@@ -143,7 +151,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,
-                          minimumSize: Size(buttonWidth, 50),
+                          minimumSize: const Size(300, 50),
+                          // Set fixed width for buttons
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -166,7 +175,8 @@ class _AuthScreenState extends State<AuthScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height:20),
+
                       ElevatedButton(
                         onPressed: () {
                           context.go('/otpAuthScreen');
@@ -174,7 +184,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,
-                          minimumSize: Size(buttonWidth, 50),
+                          minimumSize: const Size(300, 50),
+                          // Set fixed width for buttons
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -197,9 +208,12 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ],
                         ),
-                      ),
+                      )
                     ],
-                  ),
+                  )
+
+                  ,
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -213,7 +227,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           style: TextStyle(color: Colors.white70),
                         ),
                       ),
-                      const SizedBox(width: 24),
+
                       TextButton(
                         onPressed: () {
                           _launchURL(

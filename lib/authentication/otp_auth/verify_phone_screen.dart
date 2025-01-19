@@ -2,9 +2,9 @@ import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../utils/helpers.dart' as verify_phone_number_screen;
-import '../widgets/custom_loader.dart';
-import '../widgets/pin_input_field.dart';
+import '../../utils/helpers.dart' as verify_phone_number_screen;
+import '../../widgets/custom_loader.dart';
+import '../../widgets/pin_input_field.dart';
 
 class VerifyPhoneNumberScreen extends StatefulWidget {
   static const id = 'VerifyPhoneNumberScreen';
