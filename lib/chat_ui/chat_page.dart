@@ -1,5 +1,8 @@
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../services/gemini_service.dart';
+import '../utils/helpers.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -67,7 +70,61 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Custom Chat")),
+            appBar: AppBar(
+        title: const Text('Indian Legal AI Assistant'),
+        bottom: _isTyping
+            ? const PreferredSize(
+                preferredSize: Size.fromHeight(4.0),
+                child: LinearProgressIndicator(),
+              )
+            : null,
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(title: Text('Home')),
+            ListTile(title: Text('Home1')),
+            ListTile(title: Text('Home2')),
+            ElevatedButton(
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
+                ),
+
+                onPressed : () async {
+                  await FirebasePhoneAuthHandler.signOut(context);
+                  showSnackBar('Logged out successfully!');
+
+                  if (context.mounted) {
+                    context.go('/authScreen');
+                  }
+                },
+                child: const Text('Logout'),
+              ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
