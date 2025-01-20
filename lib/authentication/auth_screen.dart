@@ -130,7 +130,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   // Logo and Lady Justice image
 
                   Image.asset(
-                    'assets/lady_justice.png',
+                    'assets/auth/lady_justice.png',
                     height: 120,
                   ),
 
@@ -161,7 +161,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
-                              'assets/logo/google.png',
+                              'assets/auth/google.png',
                               height: 24,
                             ),
                             const SizedBox(width: 12),
