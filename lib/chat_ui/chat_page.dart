@@ -1,8 +1,178 @@
-import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
+// import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
+// import 'package:flutter/material.dart';
+// import 'package:go_router/go_router.dart';
+// import '../services/gemini_service.dart';
+// import '../utils/helpers.dart';
+
+// class ChatPage extends StatefulWidget {
+//   const ChatPage({Key? key}) : super(key: key);
+
+//   @override
+//   State<ChatPage> createState() => _ChatPageState();
+// }
+
+// class _ChatPageState extends State<ChatPage> {
+//   final TextEditingController _controller = TextEditingController();
+//   final GeminiService _geminiService = GeminiService();
+//   final List<Map<String, String>> _messages = [];
+//   bool _isGeminiInitialized = false;
+//   bool _isTyping = false;
+//   String? _initError;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _initializeGemini();
+//   }
+
+//   Future<void> _initializeGemini() async {
+//     try {
+//       await _geminiService.initialize();
+//       setState(() => _isGeminiInitialized = true);
+//     } catch (e) {
+//       setState(() => _initError = e.toString());
+//     }
+//   }
+
+//   Future<void> _sendMessage() async {
+//     if (_controller.text.isEmpty || !_isGeminiInitialized) return;
+
+//     final userMessage = _controller.text;
+//     setState(() {
+//       _messages.add({'role': 'user', 'message': userMessage});
+//       _isTyping = true;
+//       _controller.clear();
+//     });
+
+//     try {
+//       final aiResponse = await _geminiService.sendMessage(userMessage);
+//       if (aiResponse != null) {
+//         setState(() => _messages.add({'role': 'ai', 'message': aiResponse}));
+//       }
+//     } catch (e) {
+//       setState(() => _messages.add({'role': 'ai', 'message': 'Error: $e'}));
+//     } finally {
+//       setState(() => _isTyping = false);
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     if (!_isGeminiInitialized) {
+//       return Scaffold(
+//         appBar: AppBar(title: const Text("Custom Chat")),
+//         body: Center(
+//           child: _initError != null
+//               ? Text('Initialization Failed: $_initError')
+//               : const CircularProgressIndicator(),
+//         ),
+//       );
+//     }
+
+//     return Scaffold(
+//             appBar: AppBar(
+//         title: const Text('Indian Legal AI Assistant'),
+//         bottom: _isTyping
+//             ? const PreferredSize(
+//                 preferredSize: Size.fromHeight(4.0),
+//                 child: LinearProgressIndicator(),
+//               )
+//             : null,
+//         leading: Builder(
+//           builder: (context) {
+//             return IconButton(
+//               icon: const Icon(Icons.menu),
+//               onPressed: () {
+//                 Scaffold.of(context).openDrawer();
+//               },
+//             );
+//           },
+//         ),
+//       ),
+//       drawer: Drawer(
+//         // Add a ListView to the drawer. This ensures the user can scroll
+//         // through the options in the drawer if there isn't enough vertical
+//         // space to fit everything.
+//         child: ListView(
+//           // Important: Remove any padding from the ListView.
+//           padding: EdgeInsets.zero,
+//           children: [
+//             DrawerHeader(
+//               decoration: BoxDecoration(
+//                 color: Colors.blue,
+//               ),
+//               child: Text('Drawer Header'),
+//             ),
+//             ListTile(title: Text('Home')),
+//             ListTile(title: Text('Home1')),
+//             ListTile(title: Text('Home2')),
+//             ElevatedButton(
+
+//                 style: ElevatedButton.styleFrom(
+//                   backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
+//                 ),
+
+//                 onPressed : () async {
+//                   await FirebasePhoneAuthHandler.signOut(context);
+//                   showSnackBar('Logged out successfully!');
+
+//                   if (context.mounted) {
+//                     context.go('/authScreen');
+//                   }
+//                 },
+//                 child: const Text('Logout'),
+//               ),
+//           ],
+//         ),
+//       ),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: _messages.length,
+//               itemBuilder: (context, index) {
+//                 final message = _messages[index];
+//                 return ListTile(
+//                   title: Text(
+//                     message['message']!,
+//                     style: TextStyle(
+//                       color:
+//                           message['role'] == 'user' ? Colors.blue : Colors.green,
+//                     ),
+//                   ),
+//                   subtitle:
+//                       Text(message['role'] == 'user' ? 'You' : 'AI Assistant'),
+//                 );
+//               },
+//             ),
+//           ),
+//           if (_isTyping) const LinearProgressIndicator(),
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: _controller,
+//                     decoration:
+//                         const InputDecoration(hintText: "Type your message..."),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: const Icon(Icons.send),
+//                   onPressed: _sendMessage,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import '../services/gemini_service.dart';
-import '../utils/helpers.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -17,7 +187,6 @@ class _ChatPageState extends State<ChatPage> {
   final List<Map<String, String>> _messages = [];
   bool _isGeminiInitialized = false;
   bool _isTyping = false;
-  String? _initError;
 
   @override
   void initState() {
@@ -30,137 +199,174 @@ class _ChatPageState extends State<ChatPage> {
       await _geminiService.initialize();
       setState(() => _isGeminiInitialized = true);
     } catch (e) {
-      setState(() => _initError = e.toString());
+      setState(() {});
     }
   }
 
-  Future<void> _sendMessage() async {
-    if (_controller.text.isEmpty || !_isGeminiInitialized) return;
+  Future<void> _sendMessage([String? predefinedMessage]) async {
+    if ((!_controller.text.isEmpty || predefinedMessage != null) && _isGeminiInitialized) {
+      final userMessage = predefinedMessage ?? _controller.text;
+      setState(() {
+        _messages.add({'role': 'user', 'message': userMessage});
+        _isTyping = true;
+        _controller.clear();
+      });
 
-    final userMessage = _controller.text;
-    setState(() {
-      _messages.add({'role': 'user', 'message': userMessage});
-      _isTyping = true;
-      _controller.clear();
-    });
-
-    try {
-      final aiResponse = await _geminiService.sendMessage(userMessage);
-      if (aiResponse != null) {
-        setState(() => _messages.add({'role': 'ai', 'message': aiResponse}));
+      try {
+        final aiResponse = await _geminiService.sendMessage(userMessage);
+        if (aiResponse != null) {
+          setState(() => _messages.add({'role': 'ai', 'message': aiResponse}));
+        }
+      } catch (e) {
+        setState(() => _messages.add({'role': 'ai', 'message': 'Error: $e'}));
+      } finally {
+        setState(() => _isTyping = false);
       }
-    } catch (e) {
-      setState(() => _messages.add({'role': 'ai', 'message': 'Error: $e'}));
-    } finally {
-      setState(() => _isTyping = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_isGeminiInitialized) {
-      return Scaffold(
-        appBar: AppBar(title: const Text("Custom Chat")),
-        body: Center(
-          child: _initError != null
-              ? Text('Initialization Failed: $_initError')
-              : const CircularProgressIndicator(),
-        ),
-      );
-    }
-
     return Scaffold(
-            appBar: AppBar(
-        title: const Text('Indian Legal AI Assistant'),
-        bottom: _isTyping
-            ? const PreferredSize(
-                preferredSize: Size.fromHeight(4.0),
-                child: LinearProgressIndicator(),
-              )
-            : null,
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title: const Text(
+          'Litigence AI',
+          style: TextStyle(color: Colors.white),
         ),
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu_rounded, color: Colors.white),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            onPressed: () {
+              _sendMessage('Logout');
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Theme.of(context).colorScheme.primary,
               ),
-              child: Text('Drawer Header'),
+              child: const Text(
+                'Litigence AI',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
             ),
-            ListTile(title: Text('Home')),
-            ListTile(title: Text('Home1')),
-            ListTile(title: Text('Home2')),
-            ElevatedButton(
-
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
-                ),
-
-                onPressed : () async {
-                  await FirebasePhoneAuthHandler.signOut(context);
-                  showSnackBar('Logged out successfully!');
-
-                  if (context.mounted) {
-                    context.go('/authScreen');
-                  }
-                },
-                child: const Text('Logout'),
-              ),
+            ListTile(title: const Text('Home')),
+            ListTile(title: const Text('Settings')),
+            ListTile(title: const Text('About')),
           ],
         ),
       ),
       body: Column(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                return ListTile(
-                  title: Text(
-                    message['message']!,
-                    style: TextStyle(
-                      color:
-                          message['role'] == 'user' ? Colors.blue : Colors.green,
+          if (_messages.isEmpty)
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Law of the Day',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  subtitle:
-                      Text(message['role'] == 'user' ? 'You' : 'AI Assistant'),
-                );
-              },
+                    const SizedBox(height: 20),
+                    InkWell(
+                      onTap: () {
+                        _sendMessage('Explain Article 21 of Indian Constitution in detail');
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.white.withOpacity(0.3)),
+                          color: Colors.white.withOpacity(0.1),
+                        ),
+                        child: Text(
+                          'Article 21: Protection of Life and Personal Liberty - No person shall be deprived of his life or personal liberty except according to procedure established by law.',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
+          if (_messages.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  final message = _messages[index];
+                  return ListTile(
+                    title: Text(
+                      message['message']!,
+                      style: TextStyle(
+                        color: message['role'] == 'user' ? Colors.blue : Colors.green,
+                      ),
+                    ),
+                    subtitle: Text(message['role'] == 'user' ? 'You' : 'AI Assistant'),
+                  );
+                },
+              ),
+            ),
           if (_isTyping) const LinearProgressIndicator(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              border: Border(
+                top: BorderSide(
+                  color: Colors.grey.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+            ),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    decoration:
-                        const InputDecoration(hintText: "Type your message..."),
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Message Litigence AI',
+                      hintStyle: TextStyle(color: Colors.grey.withOpacity(0.6)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.6),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                    ),
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: _sendMessage,
+                  icon: const Icon(Icons.send, color: Colors.white),
+                  onPressed: () => _sendMessage(),
                 ),
               ],
             ),
