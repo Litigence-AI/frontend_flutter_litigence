@@ -1,5 +1,8 @@
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../services/gemini_service.dart';
+import '../utils/helpers.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -71,9 +74,14 @@ class _ChatPageState extends State<ChatPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: () {
-              _sendMessage('Logout');
-            },
+            onPressed : () async {
+                  await FirebasePhoneAuthHandler.signOut(context);
+                  showSnackBar('Logged out successfully!');
+
+                  if (context.mounted) {
+                    context.go('/authScreen');
+                  }
+                },
           ),
         ],
       ),
