@@ -40,7 +40,7 @@ class _OtpAuthState extends State<OtpAuth> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/otp_verification_image.png',
+                      'assets/auth/otp_verification_image.png',
                       width: 170,
                       height: 170,
                     ),
