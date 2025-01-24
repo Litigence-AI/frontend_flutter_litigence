@@ -1,5 +1,9 @@
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../services/gemini_service.dart';
+import '../utils/helpers.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Add this import
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -31,7 +35,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> _sendMessage([String? predefinedMessage]) async {
-    if ((!_controller.text.isEmpty || predefinedMessage != null) && _isGeminiInitialized) {
+    if ((!_controller.text.isEmpty || predefinedMessage != null) &&
+        _isGeminiInitialized) {
       final userMessage = predefinedMessage ?? _controller.text;
       setState(() {
         _messages.add({'role': 'user', 'message': userMessage});
@@ -64,15 +69,30 @@ class _ChatPageState extends State<ChatPage> {
         ),
         leading: Builder(
           builder: (context) => IconButton(
-            icon: const Icon(Icons.menu_rounded, color: Colors.white),
+            icon: SvgPicture.asset(
+              'assets/chat/sidebar.svg', // Replaces Icons.menu_pounded
+              width: 24, // Adjust size as needed
+              height: 24,
+              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onSurface, BlendMode.srcIn),
+            ),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: () {
-              _sendMessage('Logout');
+            icon: SvgPicture.asset(
+              'assets/chat/add_note.svg', // Replaces Icons.logout (adjust based on your use case)
+              width: 24,
+              height: 24,
+              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onSurface, BlendMode.srcIn),
+            ),
+            onPressed: () async {
+              await FirebasePhoneAuthHandler.signOut(context);
+              showSnackBar('Logged out successfully!');
+
+              if (context.mounted) {
+                context.go('/authScreen');
+              }
             },
           ),
         ],
@@ -115,14 +135,16 @@ class _ChatPageState extends State<ChatPage> {
                     const SizedBox(height: 20),
                     InkWell(
                       onTap: () {
-                        _sendMessage('Explain Article 21 of Indian Constitution in detail');
+                        _sendMessage(
+                            'Explain Article 21 of Indian Constitution in detail');
                       },
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 24),
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.white.withOpacity(0.3)),
+                          border:
+                              Border.all(color: Colors.white.withOpacity(0.3)),
                           color: Colors.white.withOpacity(0.1),
                         ),
                         child: Text(
@@ -149,10 +171,13 @@ class _ChatPageState extends State<ChatPage> {
                     title: Text(
                       message['message']!,
                       style: TextStyle(
-                        color: message['role'] == 'user' ? Colors.blue : Colors.green,
+                        color: message['role'] == 'user'
+                            ? Colors.blue
+                            : Colors.green,
                       ),
                     ),
-                    subtitle: Text(message['role'] == 'user' ? 'You' : 'AI Assistant'),
+                    subtitle: Text(
+                        message['role'] == 'user' ? 'You' : 'AI Assistant'),
                   );
                 },
               ),
@@ -183,7 +208,10 @@ class _ChatPageState extends State<ChatPage> {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.6),
+                      fillColor: Theme.of(context)
+                          .colorScheme
+                          .surface
+                          .withOpacity(0.6),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 8,
