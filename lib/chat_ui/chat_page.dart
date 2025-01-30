@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../services/gemini_service.dart';
 import '../utils/helpers.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // Add this import
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../chat_ui/firestore_operations.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -15,14 +18,18 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
   final GeminiService _geminiService = GeminiService();
-  final List<Map<String, String>> _messages = [];
+  List<Map<String, String>> _messages = [];
   bool _isGeminiInitialized = false;
   bool _isTyping = false;
+  String _currentChatTitle = "Default Chat"; // Example chat title - make dynamic later
+  List<Map<String, dynamic>> _chatTitles = []; // List to hold chat titles
+  bool _isLoadingTitles = false;
 
   @override
   void initState() {
     super.initState();
     _initializeGemini();
+    _loadChatTitles(); // Load chat titles on page load
   }
 
   Future<void> _initializeGemini() async {
@@ -48,12 +55,110 @@ class _ChatPageState extends State<ChatPage> {
         final aiResponse = await _geminiService.sendMessage(userMessage);
         if (aiResponse != null) {
           setState(() => _messages.add({'role': 'ai', 'message': aiResponse}));
+
+          // Call the modularized Firestore saving function
+          await saveChatMessageToFirestore(
+            chatTitle: _currentChatTitle,
+            userMessage: userMessage,
+            aiResponse: aiResponse,
+          );
         }
       } catch (e) {
         setState(() => _messages.add({'role': 'ai', 'message': 'Error: $e'}));
       } finally {
         setState(() => _isTyping = false);
       }
+    }
+  }
+
+  Future<void> _loadChatTitles() async {
+    setState(() {
+      _isLoadingTitles = true;
+      _chatTitles.clear(); // Clear existing titles
+    });
+
+    try {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      String? userId = currentUser?.uid;
+
+      if (userId == null) {
+        print("Error: User not logged in. Cannot load chat titles.");
+        return;
+      }
+
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('chat_history')
+          .doc(userId)
+          .collection('user_chats')
+          .orderBy('last_updated', descending: true)
+          .limit(10) // Load only top 10 titles initially
+          .get();
+
+      List<Map<String, dynamic>> fetchedChatTitles = querySnapshot.docs
+          .map((doc) => {
+                'title': doc.get('title') as String,
+                'last_updated': (doc.get('last_updated') as Timestamp).toDate(),
+                // Add other metadata you want to display in the title list
+              })
+          .toList();
+
+      setState(() {
+        _chatTitles.addAll(fetchedChatTitles);
+      });
+    } catch (e) {
+      print("Error loading chat titles: $e");
+      // Handle error (e.g., show an error message)
+    } finally {
+      setState(() {
+        _isLoadingTitles = false;
+      });
+    }
+  }
+
+  Future<void> _loadChatMessages(String chatTitle) async {
+    setState(() {
+      _messages.clear(); // Clear existing messages
+      _isTyping = true; // Show loading indicator
+      _currentChatTitle = chatTitle;
+    });
+
+    try {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      String? userId = currentUser?.uid;
+
+      if (userId == null) {
+        print("Error: User not logged in. Cannot load chat history.");
+        return; // Or handle error appropriately
+      }
+
+      DocumentSnapshot chatSessionDoc = await FirebaseFirestore.instance
+          .collection('chat_history')
+          .doc(userId)
+          .collection('user_chats')
+          .doc(chatTitle)
+          .get();
+
+      if (chatSessionDoc.exists) {
+        List<dynamic> messagesFromFirestore = chatSessionDoc.get('messages');
+        // Cast to List<Map<String, String>>
+        List<Map<String, String>> fetchedMessages = messagesFromFirestore
+            .map((message) => {
+                  'role': message['role'] as String,
+                  'message': message['message'] as String,
+                })
+            .toList();
+
+        setState(() {
+          _messages.addAll(fetchedMessages);
+        });
+      }
+    } catch (e) {
+      print("Error loading chat history: $e");
+      // Handle error (e.g., show a snackbar or an error message)
+    } finally {
+      setState(() {
+        _isTyping = false; // Hide loading indicator
+      });
     }
   }
 
@@ -73,7 +178,8 @@ class _ChatPageState extends State<ChatPage> {
               'assets/chat/sidebar.svg', // Replaces Icons.menu_pounded
               width: 24, // Adjust size as needed
               height: 24,
-              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onSurface, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.onSurface, BlendMode.srcIn),
             ),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
@@ -84,7 +190,8 @@ class _ChatPageState extends State<ChatPage> {
               'assets/chat/add_note.svg', // Replaces Icons.logout (adjust based on your use case)
               width: 24,
               height: 24,
-              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onSurface, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.onSurface, BlendMode.srcIn),
             ),
             onPressed: () async {
               await FirebasePhoneAuthHandler.signOut(context);
@@ -110,6 +217,19 @@ class _ChatPageState extends State<ChatPage> {
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
+            if (_isLoadingTitles)
+              const LinearProgressIndicator() // Show loading indicator
+            else
+              ..._chatTitles.map((chatTitleData) => ListTile(
+                    title: Text(
+                      chatTitleData['title'],
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onTap: () {
+                      _loadChatMessages(chatTitleData['title']);
+                      Navigator.pop(context); // Close the drawer
+                    },
+                  )),
             ListTile(title: const Text('Home')),
             ListTile(title: const Text('Settings')),
             ListTile(title: const Text('About')),
