@@ -1,11 +1,11 @@
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import '../services/gemini_service.dart';
 import '../utils/helpers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../chat_ui/firestore_operations.dart';
 
 class ChatPage extends StatefulWidget {
@@ -17,6 +17,8 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController(); // Add ScrollController
+
   final GeminiService _geminiService = GeminiService();
   List<Map<String, String>> _messages = [];
   bool _isGeminiInitialized = false;
@@ -30,6 +32,13 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
     _initializeGemini();
     _loadChatTitles(); // Load chat titles on page load
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _scrollController.dispose(); // Dispose ScrollController
+    super.dispose();
   }
 
   Future<void> _initializeGemini() async {
@@ -51,10 +60,17 @@ class _ChatPageState extends State<ChatPage> {
         _controller.clear();
       });
 
+      // Scroll to bottom after sending user message
+      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+
       try {
         final aiResponse = await _geminiService.sendMessage(userMessage);
         if (aiResponse != null) {
           setState(() => _messages.add({'role': 'ai', 'message': aiResponse}));
+
+          // Scroll to bottom after receiving AI response
+          WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+
 
           // Call the modularized Firestore saving function
           await saveChatMessageToFirestore(
@@ -68,6 +84,16 @@ class _ChatPageState extends State<ChatPage> {
       } finally {
         setState(() => _isTyping = false);
       }
+    }
+  }
+
+    void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
     }
   }
 
@@ -284,6 +310,7 @@ class _ChatPageState extends State<ChatPage> {
           if (_messages.isNotEmpty)
             Expanded(
               child: ListView.builder(
+                controller: _scrollController,
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
                   final message = _messages[index];
@@ -317,24 +344,32 @@ class _ChatPageState extends State<ChatPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: 'Message Litigence AI',
-                      hintStyle: TextStyle(color: Colors.grey.withOpacity(0.6)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Theme.of(context)
-                          .colorScheme
-                          .surface
-                          .withOpacity(0.6),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
+                  child: KeyboardListener( // Wrap TextField with RawKeyboardListener
+                    focusNode: FocusNode(), // Create a FocusNode
+                    onKeyEvent: (KeyEvent event) {
+                      if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+                        _sendMessage();
+                      }
+                    },
+                    child: TextField(
+                      controller: _controller,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: 'Message Litigence AI',
+                        hintStyle: TextStyle(color: Colors.grey.withOpacity(0.6)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Theme.of(context)
+                            .colorScheme
+                            .surface
+                            .withOpacity(0.6),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                       ),
                     ),
                   ),
