@@ -1,3 +1,4 @@
+import 'package:Litigence/chat_ui/chat_drawer.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -230,37 +231,10 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              child: const Text(
-                'Litigence AI',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
-            if (_isLoadingTitles)
-              const LinearProgressIndicator() // Show loading indicator
-            else
-              ..._chatTitles.map((chatTitleData) => ListTile(
-                    title: Text(
-                      chatTitleData['title'],
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onTap: () {
-                      _loadChatMessages(chatTitleData['title']);
-                      Navigator.pop(context); // Close the drawer
-                    },
-                  )),
-            ListTile(title: const Text('Home')),
-            ListTile(title: const Text('Settings')),
-            ListTile(title: const Text('About')),
-          ],
-        ),
+      drawer: ChatDrawer(
+        chatTitles: _chatTitles,
+        isLoading: _isLoadingTitles,
+        onChatSelected: (selectedTitle) => _loadChatMessages(selectedTitle), // Pass callback
       ),
       body: Column(
         children: [

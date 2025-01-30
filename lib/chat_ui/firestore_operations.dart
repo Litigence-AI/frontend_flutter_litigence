@@ -57,3 +57,4 @@ Future<void> saveChatMessageToFirestore({
   }
   await batch.commit();
 }
+
