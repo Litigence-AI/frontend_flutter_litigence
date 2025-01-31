@@ -1,4 +1,7 @@
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../utils/helpers.dart';
 
 class ChatDrawer extends StatelessWidget {
   final List<Map<String, dynamic>> chatTitles; // List of chat titles
@@ -39,6 +42,19 @@ class ChatDrawer extends StatelessWidget {
           ListTile(title: const Text('Home')),
           ListTile(title: const Text('Settings')),
           ListTile(title: const Text('About')),
+          const Divider(),
+          ListTile(
+            title: const Text('Logout'),
+            leading: const Icon(Icons.logout),
+            onTap: () async {
+              await FirebasePhoneAuthHandler.signOut(context);
+              showSnackBar('Logged out successfully!');
+              // TODO: ensure snackbar is shown
+              if (context.mounted) {
+                context.go('/authScreen');
+              }
+            },
+          ),
         ],
       ),
     );
