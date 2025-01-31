@@ -1,12 +1,12 @@
 import 'package:Litigence/chat_ui/chat_drawer.dart';
-import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
+// import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 import '../services/gemini_service.dart';
-import '../utils/helpers.dart';
+// import '../utils/helpers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import '../chat_ui/firestore_operations.dart';
 
 class ChatPage extends StatefulWidget {
@@ -18,17 +18,19 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
-  final ScrollController _scrollController = ScrollController(); // Add ScrollController
+  final ScrollController _scrollController =
+      ScrollController(); // Add ScrollController
 
   final GeminiService _geminiService = GeminiService();
   List<Map<String, String>> _messages = [];
   bool _isGeminiInitialized = false;
   bool _isTyping = false;
-  String _currentChatTitle = "Default Chat"; // Example chat title - make dynamic later
+  String _currentChatTitle =
+      "Default Chat"; // Example chat title - make dynamic later
   // List<Map<String, dynamic>> _chatTitles = []; // List to hold chat titles
   // bool _isLoadingTitles = false;
 
-  bool _isFirstMessage = false; // Tracks if it's the first message in a new chat
+  bool _isNewChat = false; // Tracks if it's the first message in a new chat
 
   @override
   void initState() {
@@ -72,8 +74,8 @@ class _ChatPageState extends State<ChatPage> {
           setState(() => _messages.add({'role': 'ai', 'message': aiResponse}));
 
           // Scroll to bottom after receiving AI response
-          WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
-
+          WidgetsBinding.instance
+              .addPostFrameCallback((_) => _scrollToBottom());
 
           // Call the modularized Firestore saving function
           await saveChatMessageToFirestore(
@@ -90,7 +92,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-    void _scrollToBottom() {
+  void _scrollToBottom() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
@@ -132,21 +134,19 @@ class _ChatPageState extends State<ChatPage> {
                   Theme.of(context).colorScheme.onSurface, BlendMode.srcIn),
             ),
             onPressed: () async {
-              await FirebasePhoneAuthHandler.signOut(context);
-              showSnackBar('Logged out successfully!');
-
-              if (context.mounted) {
-                context.go('/authScreen');
-              }
+              setState(() {
+                _messages.clear();                
+              });
+              _isNewChat = true;
             },
           ),
         ],
       ),
       drawer: ChatDrawer(
-        // chatTitles: _chatTitles,
-        // isLoading: _isLoadingTitles,
-        // onChatSelected: (selectedTitle) => _loadChatMessages(selectedTitle), // Pass callback
-      ),
+          // chatTitles: _chatTitles,
+          // isLoading: _isLoadingTitles,
+          // onChatSelected: (selectedTitle) => _loadChatMessages(selectedTitle), // Pass callback
+          ),
       body: Column(
         children: [
           if (_messages.isEmpty)
@@ -229,10 +229,12 @@ class _ChatPageState extends State<ChatPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: KeyboardListener( // Wrap TextField with RawKeyboardListener
+                  child: KeyboardListener(
+                    // Wrap TextField with RawKeyboardListener
                     focusNode: FocusNode(), // Create a FocusNode
                     onKeyEvent: (KeyEvent event) {
-                      if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+                      if (event is KeyDownEvent &&
+                          event.logicalKey == LogicalKeyboardKey.enter) {
                         _sendMessage();
                       }
                     },
@@ -241,7 +243,8 @@ class _ChatPageState extends State<ChatPage> {
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: 'Message Litigence AI',
-                        hintStyle: TextStyle(color: Colors.grey.withOpacity(0.6)),
+                        hintStyle:
+                            TextStyle(color: Colors.grey.withOpacity(0.6)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
