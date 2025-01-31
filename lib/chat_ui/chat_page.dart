@@ -25,14 +25,16 @@ class _ChatPageState extends State<ChatPage> {
   bool _isGeminiInitialized = false;
   bool _isTyping = false;
   String _currentChatTitle = "Default Chat"; // Example chat title - make dynamic later
-  List<Map<String, dynamic>> _chatTitles = []; // List to hold chat titles
-  bool _isLoadingTitles = false;
+  // List<Map<String, dynamic>> _chatTitles = []; // List to hold chat titles
+  // bool _isLoadingTitles = false;
+
+  bool _isFirstMessage = false; // Tracks if it's the first message in a new chat
 
   @override
   void initState() {
     super.initState();
     _initializeGemini();
-    _loadChatTitles(); // Load chat titles on page load
+    // _loadChatTitles(); // Load chat titles on page load
   }
 
   @override
@@ -98,97 +100,6 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  Future<void> _loadChatTitles() async {
-    setState(() {
-      _isLoadingTitles = true;
-      _chatTitles.clear(); // Clear existing titles
-    });
-
-    try {
-      User? currentUser = FirebaseAuth.instance.currentUser;
-      String? userId = currentUser?.uid;
-
-      if (userId == null) {
-        print("Error: User not logged in. Cannot load chat titles.");
-        return;
-      }
-
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('chat_history')
-          .doc(userId)
-          .collection('user_chats')
-          .orderBy('last_updated', descending: true)
-          .limit(10) // Load only top 10 titles initially
-          .get();
-
-      List<Map<String, dynamic>> fetchedChatTitles = querySnapshot.docs
-          .map((doc) => {
-                'title': doc.get('title') as String,
-                'last_updated': (doc.get('last_updated') as Timestamp).toDate(),
-                // Add other metadata you want to display in the title list
-              })
-          .toList();
-
-      setState(() {
-        _chatTitles.addAll(fetchedChatTitles);
-      });
-    } catch (e) {
-      print("Error loading chat titles: $e");
-      // Handle error (e.g., show an error message)
-    } finally {
-      setState(() {
-        _isLoadingTitles = false;
-      });
-    }
-  }
-
-  Future<void> _loadChatMessages(String chatTitle) async {
-    setState(() {
-      _messages.clear(); // Clear existing messages
-      _isTyping = true; // Show loading indicator
-      _currentChatTitle = chatTitle;
-    });
-
-    try {
-      User? currentUser = FirebaseAuth.instance.currentUser;
-      String? userId = currentUser?.uid;
-
-      if (userId == null) {
-        print("Error: User not logged in. Cannot load chat history.");
-        return; // Or handle error appropriately
-      }
-
-      DocumentSnapshot chatSessionDoc = await FirebaseFirestore.instance
-          .collection('chat_history')
-          .doc(userId)
-          .collection('user_chats')
-          .doc(chatTitle)
-          .get();
-
-      if (chatSessionDoc.exists) {
-        List<dynamic> messagesFromFirestore = chatSessionDoc.get('messages');
-        // Cast to List<Map<String, String>>
-        List<Map<String, String>> fetchedMessages = messagesFromFirestore
-            .map((message) => {
-                  'role': message['role'] as String,
-                  'message': message['message'] as String,
-                })
-            .toList();
-
-        setState(() {
-          _messages.addAll(fetchedMessages);
-        });
-      }
-    } catch (e) {
-      print("Error loading chat history: $e");
-      // Handle error (e.g., show a snackbar or an error message)
-    } finally {
-      setState(() {
-        _isTyping = false; // Hide loading indicator
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -232,9 +143,9 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
       drawer: ChatDrawer(
-        chatTitles: _chatTitles,
-        isLoading: _isLoadingTitles,
-        onChatSelected: (selectedTitle) => _loadChatMessages(selectedTitle), // Pass callback
+        // chatTitles: _chatTitles,
+        // isLoading: _isLoadingTitles,
+        // onChatSelected: (selectedTitle) => _loadChatMessages(selectedTitle), // Pass callback
       ),
       body: Column(
         children: [
@@ -360,3 +271,97 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 }
+
+
+
+
+// Future<void> _loadChatTitles() async {
+//   setState(() {
+//     _isLoadingTitles = true;
+//     _chatTitles.clear(); // Clear existing titles
+//   });
+
+//   try {
+//     User? currentUser = FirebaseAuth.instance.currentUser;
+//     String? userId = currentUser?.uid;
+
+//     if (userId == null) {
+//       print("Error: User not logged in. Cannot load chat titles.");
+//       return;
+//     }
+
+//     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+//         .collection('chat_history')
+//         .doc(userId)
+//         .collection('user_chats')
+//         .orderBy('last_updated', descending: true)
+//         .limit(10) // Load only top 10 titles initially
+//         .get();
+
+//     List<Map<String, dynamic>> fetchedChatTitles = querySnapshot.docs
+//         .map((doc) => {
+//               'title': doc.get('title') as String,
+//               'last_updated': (doc.get('last_updated') as Timestamp).toDate(),
+//               // Add other metadata you want to display in the title list
+//             })
+//         .toList();
+
+//     setState(() {
+//       _chatTitles.addAll(fetchedChatTitles);
+//     });
+//   } catch (e) {
+//     print("Error loading chat titles: $e");
+//     // Handle error (e.g., show an error message)
+//   } finally {
+//     setState(() {
+//       _isLoadingTitles = false;
+//     });
+//   }
+// }
+
+// Future<void> _loadChatMessages(String chatTitle) async {
+//   setState(() {
+//     _messages.clear(); // Clear existing messages
+//     _isTyping = true; // Show loading indicator
+//     _currentChatTitle = chatTitle;
+//   });
+
+//   try {
+//     User? currentUser = FirebaseAuth.instance.currentUser;
+//     String? userId = currentUser?.uid;
+
+//     if (userId == null) {
+//       print("Error: User not logged in. Cannot load chat history.");
+//       return; // Or handle error appropriately
+//     }
+
+//     DocumentSnapshot chatSessionDoc = await FirebaseFirestore.instance
+//         .collection('chat_history')
+//         .doc(userId)
+//         .collection('user_chats')
+//         .doc(chatTitle)
+//         .get();
+
+//     if (chatSessionDoc.exists) {
+//       List<dynamic> messagesFromFirestore = chatSessionDoc.get('messages');
+//       // Cast to List<Map<String, String>>
+//       List<Map<String, String>> fetchedMessages = messagesFromFirestore
+//           .map((message) => {
+//                 'role': message['role'] as String,
+//                 'message': message['message'] as String,
+//               })
+//           .toList();
+
+//       setState(() {
+//         _messages.addAll(fetchedMessages);
+//       });
+//     }
+//   } catch (e) {
+//     print("Error loading chat history: $e");
+//     // Handle error (e.g., show a snackbar or an error message)
+//   } finally {
+//     setState(() {
+//       _isTyping = false; // Hide loading indicator
+//     });
+//   }
+// }
