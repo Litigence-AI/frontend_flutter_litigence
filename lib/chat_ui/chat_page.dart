@@ -1,11 +1,15 @@
 import 'package:Litigence/chat_ui/chat_drawer.dart';
 // import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
+// import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 import '../services/gemini_service.dart';
 // import '../utils/helpers.dart';
+// import '../utils/helpers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import '../chat_ui/firestore_operations.dart';
 
@@ -20,6 +24,8 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController =
       ScrollController(); // Add ScrollController
+  final ScrollController _scrollController =
+      ScrollController(); // Add ScrollController
 
   final GeminiService _geminiService = GeminiService();
   List<Map<String, String>> _messages = [];
@@ -27,9 +33,12 @@ class _ChatPageState extends State<ChatPage> {
   bool _isTyping = false;
   String _currentChatTitle =
       "Default Chat"; // Example chat title - make dynamic later
+  String _currentChatTitle =
+      "Default Chat"; // Example chat title - make dynamic later
   // List<Map<String, dynamic>> _chatTitles = []; // List to hold chat titles
   // bool _isLoadingTitles = false;
 
+  bool _isNewChat = false; // Tracks if it's the first message in a new chat
   bool _isNewChat = false; // Tracks if it's the first message in a new chat
 
   @override
@@ -76,6 +85,8 @@ class _ChatPageState extends State<ChatPage> {
           // Scroll to bottom after receiving AI response
           WidgetsBinding.instance
               .addPostFrameCallback((_) => _scrollToBottom());
+          WidgetsBinding.instance
+              .addPostFrameCallback((_) => _scrollToBottom());
 
           // Call the modularized Firestore saving function
           await saveChatMessageToFirestore(
@@ -92,6 +103,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  void _scrollToBottom() {
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
