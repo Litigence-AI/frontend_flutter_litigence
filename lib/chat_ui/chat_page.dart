@@ -21,9 +21,8 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+
   final TextEditingController _controller = TextEditingController();
-  final ScrollController _scrollController =
-      ScrollController(); // Add ScrollController
   final ScrollController _scrollController =
       ScrollController(); // Add ScrollController
 
@@ -33,12 +32,9 @@ class _ChatPageState extends State<ChatPage> {
   bool _isTyping = false;
   String _currentChatTitle =
       "Default Chat"; // Example chat title - make dynamic later
-  String _currentChatTitle =
-      "Default Chat"; // Example chat title - make dynamic later
   // List<Map<String, dynamic>> _chatTitles = []; // List to hold chat titles
   // bool _isLoadingTitles = false;
 
-  bool _isNewChat = false; // Tracks if it's the first message in a new chat
   bool _isNewChat = false; // Tracks if it's the first message in a new chat
 
   @override
@@ -103,7 +99,6 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void _scrollToBottom() {
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
