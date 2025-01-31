@@ -17,7 +17,7 @@ Future<void> saveChatMessageToFirestore({
 
   // Get reference to chat session document using user ID and chat title as document ID
   DocumentReference chatSessionRef = firestore
-      .collection('chat_history') // Top-level collection: chat_history
+      .collection('user_data') // Top-level collection: user_data
       .doc(userId) // Document ID: User ID
       .collection('user_chats') // Subcollection: user_chats
       .doc(chatTitle); // Document ID: Chat Title
