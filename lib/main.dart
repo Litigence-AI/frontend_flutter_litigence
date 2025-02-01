@@ -1,11 +1,9 @@
 import 'package:Litigence/authentication/auth_screen.dart';
 import 'package:Litigence/authentication/google_auth/google_auth_screen.dart';
 import 'package:Litigence/authentication/otp_auth/otp_auth_screen.dart';
-import 'package:Litigence/utils/globals.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'chat_ui/chat_page.dart';
 import 'firebase_options.dart';
 import '../onboarding/onboarding_screen.dart';
@@ -13,11 +11,10 @@ import 'package:go_router/go_router.dart';
 import 'authentication/otp_auth/verify_phone_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'providers.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  final prefs = await SharedPreferences.getInstance();
-  bool isOnboardingComplete = prefs.getBool('onboarding_complete') ?? false;
 
   try {
     await Firebase.initializeApp(
@@ -27,88 +24,109 @@ Future<void> main() async {
     debugPrint("Firebase Initialization Error: $e");
   }
 
-  runApp(    
-    ProviderScope( child:MyApp( isOnboardingComplete: isOnboardingComplete ) )  
-  );
+  runApp(ProviderScope(child: FirebasePhoneAuthProvider(child: MyApp())));
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key, required this.isOnboardingComplete});
-
-  final bool isOnboardingComplete;
+class MyApp extends ConsumerWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Watch the onboarding status from the provider.
+    final onboardingAsync = ref.watch(onboardingCompleteProvider);
 
-class _MyAppState extends State<MyApp> {
-  String root = '/onboardScreen';
+    return onboardingAsync.when(
+      data: (isOnboardingComplete) {
+        // Once we have onboarding status, watch the Firebase auth state.
+        final firebaseUserAsync = ref.watch(firebaseUserProvider);
+        final firebaseUser = firebaseUserAsync.asData?.value;
 
-  @override
-  void initState() {
-    (() async {
-      await Future.delayed(Duration.zero);
-      final isLoggedIn = Globals.firebaseUser != null;
+        // We'll create the router in the next step.
+        // For now, we simply pass these values to our router.
+        final router = createRouter(isOnboardingComplete, firebaseUser);
 
-      if (!widget.isOnboardingComplete) return;
-
-      root = (isLoggedIn ? '/chatScreen' : '/authScreen');
-    })();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // Define your GoRouter here
-    final GoRouter _router = GoRouter(
-      initialLocation: root,
-
-      debugLogDiagnostics: true,
-      // TODO: Remove DebugLogs
-      routes: [
-        GoRoute(
-          path: '/onboardScreen',
-          builder: (context, state) => const OnboardScreen(),
-        ),
-        GoRoute(
-          path: '/chatScreen',
-          builder: (context, state) => const ChatPage(),
-        ),
-        GoRoute(
-          path: '/authScreen',
-          builder: (context, state) => const AuthScreen(),
-        ),
-        GoRoute(
-          path: '/otpAuthScreen', 
-          builder: (context, state) => const OtpAuth()
-        ),
-        GoRoute(
-          path: '/googleAuthScreen', 
-          builder: (context, state) => const GoogleAuthScreen()
-        ),
-        GoRoute(
-          path: '/verifyPhoneNumberScreen',
-          builder: (context, state) => VerifyPhoneNumberScreen(
-            phoneNumber: state.extra as String,
+        return MaterialApp.router(
+          title: 'Litigence AI',
+          theme: ThemeData.dark(useMaterial3: true).copyWith(
+            textTheme: ThemeData.dark(useMaterial3: true).textTheme.apply(
+                  fontFamily: 'Roboto',
+                ),
+            primaryTextTheme: const TextTheme().apply(
+              fontFamily: 'Roboto',
+            ),
           ),
+          routerConfig: router,
+        );
+      },
+      loading: () => const MaterialApp(
+        home: Scaffold(
+          body: Center(child: CircularProgressIndicator()),
         ),
-
-      ],
-    );
-
-    return FirebasePhoneAuthProvider(
-      child: MaterialApp.router(
-        title: 'Litigence AI',
-        theme: ThemeData.dark(useMaterial3: true).copyWith(
-          textTheme: ThemeData.dark(useMaterial3: true).textTheme.apply(
-                fontFamily: 'Roboto',
-              ),
-          primaryTextTheme: const TextTheme().apply(
-            fontFamily: 'Roboto',
-          ),
+      ),
+      error: (error, stack) => MaterialApp(
+        home: Scaffold(
+          body: Center(child: Text('Error: $error')),
         ),
-        routerConfig: _router, // Use router instead of routes
       ),
     );
   }
+}
+
+GoRouter createRouter(bool isOnboardingComplete, User? firebaseUser) {
+  return GoRouter(
+    debugLogDiagnostics: true,
+    redirect: (context, state) {
+      // If the user is going through the OTP process, don't force redirect yet.
+      if (state.matchedLocation == '/otpAuthScreen' ||
+          state.matchedLocation == '/verifyPhoneNumberScreen') {
+        return null;
+      }
+
+      // For normal flow:
+      if (!isOnboardingComplete && state.matchedLocation != '/onboardScreen') {
+        return '/onboardScreen';
+      }
+      if (isOnboardingComplete &&
+          firebaseUser == null &&
+          state.matchedLocation != '/authScreen' &&
+          state.matchedLocation != '/otpAuthScreen' &&
+          state.matchedLocation != '/verifyPhoneNumberScreen') {
+        return '/authScreen';
+      }
+      if (isOnboardingComplete &&
+          firebaseUser != null &&
+          state.matchedLocation != '/chatScreen') {
+        return '/chatScreen';
+      }
+      return null;
+    },
+    routes: [
+      GoRoute(
+        path: '/onboardScreen',
+        builder: (context, state) => const OnboardScreen(),
+      ),
+      GoRoute(
+        path: '/chatScreen',
+        builder: (context, state) => const ChatPage(),
+      ),
+      GoRoute(
+        path: '/authScreen',
+        builder: (context, state) => const AuthScreen(),
+      ),
+      GoRoute(
+        path: '/otpAuthScreen',
+        builder: (context, state) => const OtpAuth(),
+      ),
+      GoRoute(
+        path: '/googleAuthScreen',
+        builder: (context, state) => const GoogleAuthScreen(),
+      ),
+      GoRoute(
+        path: '/verifyPhoneNumberScreen',
+        builder: (context, state) => VerifyPhoneNumberScreen(
+          phoneNumber: state.extra as String,
+        ),
+      ),
+    ],
+  );
 }

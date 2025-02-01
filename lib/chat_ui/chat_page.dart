@@ -23,9 +23,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
 
   final TextEditingController _controller = TextEditingController();
-  final ScrollController _scrollController =
-      ScrollController(); // Add ScrollController
-
+  final ScrollController _scrollController = ScrollController(); // Add ScrollController
   final GeminiService _geminiService = GeminiService();
   List<Map<String, String>> _messages = [];
   bool _isGeminiInitialized = false;

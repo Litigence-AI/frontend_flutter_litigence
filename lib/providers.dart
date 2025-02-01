@@ -16,3 +16,4 @@ final onboardingCompleteProvider = FutureProvider<bool>(
     return prefs.getBool('onboarding_complete') ?? false;
   },
 );
+

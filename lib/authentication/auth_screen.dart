@@ -1,19 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({super.key});
 
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  ConsumerState<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _AuthScreenState extends ConsumerState<AuthScreen> {
+  
+
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -21,87 +24,122 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _checkIfUserIsLoggedIn();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _checkIfUserIsLoggedIn();
+  // }
 
-  Future<void> _checkIfUserIsLoggedIn() async {
-    final user = FirebaseAuth.instance.currentUser;
+  // Future<void> _checkIfUserIsLoggedIn() async {
+  //   final user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      // User is already signed in
-      context.go('/chatScreen');
-    }
-  }
+  //   if (user != null) {
+  //     // User is already signed in
+  //     context.go('/chatScreen');
+  //   }
+  // }
 
   Future<void> signInWithGoogle() async {
-    _checkIfUserIsLoggedIn();
+    
+  // ignore: unused_local_variable
+  bool _isSigningIn;
+  var _error;
+
+    setState(() {
+      _isSigningIn = true;
+      _error = null;
+    });
+
+    UserCredential? userCredential;
 
     if (kIsWeb) {
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
       try {
-        await FirebaseAuth.instance.signInWithPopup(googleProvider);
-        // final UserCredential userCredential = await FirebaseAuth.instance.signInWithPopup(googleProvider);
-
-        // Handle successful sign-in
-        context.go('/chatScreen');
+        userCredential =
+            await FirebaseAuth.instance.signInWithPopup(googleProvider);
+        // No need to navigate manually here.
       } on FirebaseAuthException catch (e) {
-        // Handle errors
-        print(e);
+        if (kDebugMode) debugPrint('Error in web Google sign-in: $e');
+        setState(() {
+          _error = 'Error: ${e.message}';
+        });
+      } finally {
+        setState(() {
+          _isSigningIn = false;
+        });
       }
-      return;
+    } else {
+      try {
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        if (googleUser == null) {
+          setState(() {
+            _isSigningIn = false;
+          });
+          return;
+        }
+
+        final googleAuth = await googleUser.authentication;
+
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+
+        if (userCredential.user != null) {
+          // Optionally store user data in SharedPreferences.
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('isAuthenticated', true);
+          await prefs.setString('userEmail', userCredential.user!.email ?? '');
+          await prefs.setString(
+            'userName',
+            userCredential.user!.displayName ?? '',
+          );
+          await prefs.setString(
+            'userPhoto',
+            userCredential.user!.photoURL ?? '',
+          );
+        }
+      } catch (e) {
+        if (kDebugMode) debugPrint('Error signing in with Google: $e');
+        setState(() {
+          _error = 'Failed to sign in: ${e.toString()}';
+        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(_error!)));
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isSigningIn = false;
+          });
+        }
+      }
     }
 
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-      if (googleUser == null) {
-        return;
-      }
-
-      final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
+    // For both web and non-web platforms, store details if userCredential is available.
+    if (userCredential?.user != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isAuthenticated', true);
+      await prefs.setString('userEmail', userCredential!.user!.email ?? '');
+      await prefs.setString(
+        'userName',
+        userCredential.user!.displayName ?? '',
       );
-
-      UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithCredential(credential);
-
-      if (mounted && userCredential.user != null) {
-        // Store authenticated status and account details in SharedPreferences
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isAuthenticated', true);
-        await prefs.setString('userEmail', userCredential.user!.email!);
-        await prefs.setString('userName', userCredential.user!.displayName!);
-
-        context.go('/chatScreen');
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error signing in with Google: $e');
-      }
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to sign in: $e')),
-        );
-      }
+      await prefs.setString(
+        'userPhoto',
+        userCredential.user!.photoURL ?? '',
+      );
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     // double screenWidth = MediaQuery.of(context).size.width;
-  // double textSize = screenWidth > 800 ? 32 : screenWidth > 600 ? 28 : 24;
-  // double paddingSize = screenWidth > 800 ? 32.0 : 24.0;
-  // double buttonWidth = screenWidth > 800 ? 150 : 100;
+    // double textSize = screenWidth > 800 ? 32 : screenWidth > 600 ? 28 : 24;
+    // double paddingSize = screenWidth > 800 ? 32.0 : 24.0;
+    // double buttonWidth = screenWidth > 800 ? 150 : 100;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -114,10 +152,9 @@ class _AuthScreenState extends State<AuthScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
-                 // crossAxisAlignment: CrossAxisAlignment.spacebetween,
+                // crossAxisAlignment: CrossAxisAlignment.spacebetween,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-
                   const Text(
                     "Litigence AI",
                     style: TextStyle(
@@ -175,8 +212,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height:20),
-
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           context.go('/otpAuthScreen');
@@ -210,9 +246,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                       )
                     ],
-                  )
-
-                  ,
+                  ),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -227,7 +261,6 @@ class _AuthScreenState extends State<AuthScreen> {
                           style: TextStyle(color: Colors.white70),
                         ),
                       ),
-
                       TextButton(
                         onPressed: () {
                           _launchURL(
@@ -249,4 +282,3 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
-
