@@ -10,8 +10,8 @@ import 'chat_ui/chat_page.dart';
 import 'firebase_options.dart';
 import '../onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
-
 import 'authentication/otp_auth/verify_phone_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,9 +27,9 @@ Future<void> main() async {
     debugPrint("Firebase Initialization Error: $e");
   }
 
-  runApp(MyApp(
-    isOnboardingComplete: isOnboardingComplete,
-  ));
+  runApp(    
+    ProviderScope( child:MyApp( isOnboardingComplete: isOnboardingComplete ) )  
+  );
 }
 
 class MyApp extends StatefulWidget {
