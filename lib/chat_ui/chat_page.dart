@@ -1,16 +1,8 @@
 import 'package:Litigence/chat_ui/chat_drawer.dart';
-// import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
-// import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:go_router/go_router.dart';
-// import 'package:go_router/go_router.dart';
 import '../services/gemini_service.dart';
-// import '../utils/helpers.dart';
-// import '../utils/helpers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import '../chat_ui/firestore_operations.dart';
 
 class ChatPage extends StatefulWidget {
