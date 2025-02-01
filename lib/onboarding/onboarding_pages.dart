@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:go_router/go_router.dart';
-import '../utils/globals.dart';
 import 'onboarding_widget.dart';
 import '../../utils/size_config.dart';
 import 'package:Litigence/onboarding/textfont_getter.dart';
