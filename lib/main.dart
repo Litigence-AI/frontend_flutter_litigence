@@ -1,5 +1,5 @@
 import 'package:Litigence/authentication/auth_screen.dart';
-import 'package:Litigence/authentication/google_auth/google_auth_screen.dart';
+// import 'package:Litigence/authentication/google_auth/google_auth_screen.dart';
 import 'package:Litigence/authentication/otp_auth/otp_auth_screen.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
@@ -117,10 +117,10 @@ GoRouter createRouter(bool isOnboardingComplete, User? firebaseUser) {
         path: '/otpAuthScreen',
         builder: (context, state) => const OtpAuth(),
       ),
-      GoRoute(
-        path: '/googleAuthScreen',
-        builder: (context, state) => const GoogleAuthScreen(),
-      ),
+      // GoRoute(
+      //   path: '/googleAuthScreen',
+      //   builder: (context, state) => const GoogleAuthScreen(),
+      // ),
       GoRoute(
         path: '/verifyPhoneNumberScreen',
         builder: (context, state) => VerifyPhoneNumberScreen(
