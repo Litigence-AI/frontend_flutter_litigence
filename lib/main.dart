@@ -1,5 +1,6 @@
 import 'package:Litigence/authentication/auth_screen.dart';
 import 'package:Litigence/authentication/otp_auth/otp_auth_screen.dart';
+import 'package:Litigence/utils/globals.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -43,7 +44,8 @@ class MyApp extends ConsumerWidget {
         // For now, we simply pass these values to our router.
         final router = createRouter(isOnboardingComplete, firebaseUser);
 
-        return MaterialApp.router(
+        return MaterialApp.router(      
+          scaffoldMessengerKey: Globals.scaffoldMessengerKey,
           title: 'Litigence AI',
           theme: ThemeData.dark(useMaterial3: true).copyWith(
             textTheme: ThemeData.dark(useMaterial3: true).textTheme.apply(
@@ -73,21 +75,14 @@ class MyApp extends ConsumerWidget {
 GoRouter createRouter(bool isOnboardingComplete, User? firebaseUser) {
   return GoRouter(
     debugLogDiagnostics: true,
-    redirect: (BuildContext context, GoRouterState state) {
- 
-      // Not yet onboarded? Always send to onboarding screen.
-      if (!isOnboardingComplete && state.matchedLocation != '/onboardScreen') {
-        return '/onboardScreen';
-      }
+    initialLocation: '/onboardScreen',
+    // redirect: (BuildContext context, GoRouterState state) {
+    //   // Not yet onboarded? Always send to onboarding screen.
+    //   if (!isOnboardingComplete && state.matchedLocation != '/onboardScreen') {
+    //     return '/onboardScreen';
+    //   }
 
-      // Onboarded now, but user is NOT logged in.
-      if (isOnboardingComplete &&
-          firebaseUser == null ) {
-        return '/authScreen';
-      }
-
-      return null;
-    },
+    // },
     routes: [
       GoRoute(
         path: '/onboardScreen',
@@ -105,10 +100,6 @@ GoRouter createRouter(bool isOnboardingComplete, User? firebaseUser) {
         path: '/otpAuthScreen',
         builder: (context, state) => const OtpAuth(),
       ),
-      // GoRoute(
-      //   path: '/googleAuthScreen',
-      //   builder: (context, state) => const GoogleAuthScreen(),
-      // ),
       GoRoute(
         path: '/verifyPhoneNumberScreen',
         builder: (context, state) => VerifyPhoneNumberScreen(
