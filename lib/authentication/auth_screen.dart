@@ -4,8 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<void> storeUserProfile(User user) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('username', user.displayName ?? '');
+  await prefs.setString('email', user.email ?? '');
+  await prefs.setString('profilePic', user.photoURL ?? '');
+}
 
 class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({super.key});
@@ -22,89 +29,66 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     }
   }
 
+  final _googleSignIn = GoogleSignIn(scopes: ['email']);
+
   Future<void> signInWithGoogle() async {
-    // ignore: unused_local_variable
-    bool _isSigningIn = false;
-    String? _error;
     UserCredential? userCredential;
-
-    // Set loading state
-    setState(() {
-      _isSigningIn = true;
-      _error = null;
-    });
-
-    if (kIsWeb) {
-      // Web-specific flow with extra parameters if needed
-      GoogleAuthProvider googleProvider = GoogleAuthProvider();
-      googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
-
-      try {
-        await FirebaseAuth.instance.signInWithRedirect(googleProvider);
-        userCredential = await FirebaseAuth.instance.getRedirectResult();
-        // No manual navigation; router or auth state listener handles that.
-      } on FirebaseAuthException catch (e) {
-        if (kDebugMode) debugPrint('Error in web Google sign-in: $e');
-        setState(() {
-          _error = 'Error: ${e.message}';
-        });
-      } finally {
-        setState(() {
-          _isSigningIn = false;
-        });
+    try {
+      if (kIsWeb) {
+        userCredential = await _webSignIn();
       }
-    } else {
-      // Native platforms using google_sign_in plugin
-      try {
-        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-        if (googleUser == null) {
-          setState(() {
-            _isSigningIn = false;
-          });
-          return;
-        }
+      userCredential = await _mobileSignIn();
 
-        final googleAuth = await googleUser.authentication;
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-
-        userCredential =
-            await FirebaseAuth.instance.signInWithCredential(credential);
-
-        if (userCredential.user != null) {
-          // Optionally store user data in SharedPreferences.
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setBool('isAuthenticated', true);
-          await prefs.setString('userEmail', userCredential.user!.email ?? '');
-          await prefs.setString(
-              'userName', userCredential.user!.displayName ?? '');
-          await prefs.setString(
-              'userPhoto', userCredential.user!.photoURL ?? '');
-        }
-      } catch (e) {
-        if (kDebugMode) debugPrint('Error signing in with Google: $e');
-        setState(() {
-          _error = 'Failed to sign in: ${e.toString()}';
-        });
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(_error!)));
-      } finally {
-        setState(() {
-          _isSigningIn = false;
-        });
+      if (userCredential != null && userCredential.user != null) {
+        await _storeUserInfo(userCredential.user!);
+        context.go('/chatScreen');
       }
+    } on FirebaseAuthException catch (e) {
+      _handleAuthError(e);
+      return null;
     }
+  }
 
-    // For both web and non-web platforms, store details if userCredential is available.
-    if (userCredential?.user != null) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isAuthenticated', true);
-      await prefs.setString('userEmail', userCredential!.user!.email ?? '');
-      await prefs.setString('userName', userCredential.user!.displayName ?? '');
-      await prefs.setString('userPhoto', userCredential.user!.photoURL ?? '');
-    }
+  Future<UserCredential> _webSignIn() async {
+    final provider = GoogleAuthProvider()
+      ..setCustomParameters({'prompt': 'select_account'});
+    return await FirebaseAuth.instance.signInWithPopup(provider);
+  }
+
+  Future<UserCredential?> _mobileSignIn() async {
+    final googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) return null;
+
+    final googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    return userCredential;
+  }
+
+  Future<void> _storeUserInfo(User user) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', user.displayName ?? '');
+    await prefs.setString('email', user.email ?? '');
+    await prefs.setString('profilePic', user.photoURL ?? '');
+  }
+
+  void _handleAuthError(FirebaseAuthException e) {
+    final errorMessage = switch (e.code) {
+      'account-exists-with-different-credential' =>
+        'Email already linked with another method. Use original login method.',
+      'user-disabled' => 'Account disabled. Contact support.',
+      'invalid-credential' => 'Invalid credentials. Try again.',
+      'operation-not-allowed' => 'Google login not enabled. Contact support.',
+      _ => 'Sign in failed: ${e.message}',
+    };
+
+    throw Exception(errorMessage);
   }
 
   @override
