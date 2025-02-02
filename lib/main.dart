@@ -74,12 +74,7 @@ GoRouter createRouter(bool isOnboardingComplete, User? firebaseUser) {
   return GoRouter(
     debugLogDiagnostics: true,
     redirect: (BuildContext context, GoRouterState state) {
-      // We don't want to interfere with the OTP flow.
-      if (state.matchedLocation == '/otpAuthScreen' ||
-          state.matchedLocation == '/verifyPhoneNumberScreen') {
-        return null;
-      }
-
+ 
       // Not yet onboarded? Always send to onboarding screen.
       if (!isOnboardingComplete && state.matchedLocation != '/onboardScreen') {
         return '/onboardScreen';
@@ -87,18 +82,8 @@ GoRouter createRouter(bool isOnboardingComplete, User? firebaseUser) {
 
       // Onboarded now, but user is NOT logged in.
       if (isOnboardingComplete &&
-          firebaseUser == null &&
-          state.matchedLocation != '/authScreen' &&
-          state.matchedLocation != '/otpAuthScreen' &&
-          state.matchedLocation != '/verifyPhoneNumberScreen') {
+          firebaseUser == null ) {
         return '/authScreen';
-      }
-
-      // Onboarded now and user IS logged in, so always navigate to chat screen.
-      if (isOnboardingComplete &&
-          firebaseUser != null &&
-          state.matchedLocation != '/chatScreen') {
-        return '/chatScreen';
       }
 
       return null;

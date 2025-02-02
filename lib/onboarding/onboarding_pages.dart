@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'onboarding_widget.dart';
 import '../../utils/size_config.dart';
 import 'package:Litigence/onboarding/textfont_getter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers.dart';
 
 class OnboardingScreen1 extends ConsumerWidget {
   const OnboardingScreen1({Key? key}) : super(key: key);
@@ -31,32 +33,17 @@ class OnboardingScreen2 extends StatelessWidget {
   }
 }
 
-class OnboardingScreen3 extends StatefulWidget {
+class OnboardingScreen3 extends ConsumerStatefulWidget {
   const OnboardingScreen3({Key? key}) : super(key: key);
 
   @override
-  State<OnboardingScreen3> createState() => _OnboardingScreen3State();
+  ConsumerState<OnboardingScreen3> createState() => _OnboardingScreen3State();
 }
 
-class _OnboardingScreen3State extends State<OnboardingScreen3> {
-
-  //   String root = '/onboardScreen';
-
-  //   @override
-  // void initState() {
-
-  //   (() async {
-  //     await Future.delayed(Duration.zero);
-  //     final isLoggedIn = Globals.firebaseUser != null;
-
-  //     root = (isLoggedIn ? '/chatScreen' : '/authScreen');
-  //   })();
-  //   super.initState();
-  // }
-  
+class _OnboardingScreen3State extends ConsumerState<OnboardingScreen3> {
   Future<void> _completeOnboarding(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('onboarding_complete', true);
+    // Update the reactive onboarding state.
+    await ref.read(onboardingStateProvider.notifier).completeOnboarding();
     // context.go( root );
   }
 
@@ -72,7 +59,8 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
         ),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
+            backgroundColor:
+                Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
             padding: EdgeInsets.symmetric(
               horizontal: SizeConfig.getProportionalScreenWidth(40),
               vertical: SizeConfig.getProportionalScreenHeight(25),
