@@ -1,7 +1,9 @@
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../utils/helpers.dart';
 
 class ChatDrawer extends ConsumerWidget {
@@ -15,6 +17,16 @@ class ChatDrawer extends ConsumerWidget {
     // required this.isLoading,
     // required this.onChatSelected,
   }) : super(key: key);
+
+  Future<void> signOutGoogle() async {
+
+    final _secureStorage = FlutterSecureStorage();
+    final _googleSignIn = GoogleSignIn(scopes: ['email']);
+
+    await _googleSignIn.signOut();
+    await _secureStorage.deleteAll();
+    await FirebaseAuth.instance.signOut();
+  }
 
   // Create a method to handle logout
   Future<void> _handleLogout(BuildContext context, WidgetRef ref) async {
