@@ -15,8 +15,6 @@ class AuthScreen extends ConsumerStatefulWidget {
 }
 
 class _AuthScreenState extends ConsumerState<AuthScreen> {
-  
-
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -24,40 +22,27 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _checkIfUserIsLoggedIn();
-  // }
-
-  // Future<void> _checkIfUserIsLoggedIn() async {
-  //   final user = FirebaseAuth.instance.currentUser;
-
-  //   if (user != null) {
-  //     // User is already signed in
-  //     context.go('/chatScreen');
-  //   }
-  // }
-
   Future<void> signInWithGoogle() async {
-    
-  // ignore: unused_local_variable
-  bool _isSigningIn;
-  var _error;
+    // ignore: unused_local_variable
+    bool _isSigningIn = false;
+    String? _error;
+    UserCredential? userCredential;
 
+    // Set loading state
     setState(() {
       _isSigningIn = true;
       _error = null;
     });
 
-    UserCredential? userCredential;
-
     if (kIsWeb) {
+      // Web-specific flow with extra parameters if needed
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
+      googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
+
       try {
-        userCredential =
-            await FirebaseAuth.instance.signInWithPopup(googleProvider);
-        // No need to navigate manually here.
+        await FirebaseAuth.instance.signInWithRedirect(googleProvider);
+        userCredential = await FirebaseAuth.instance.getRedirectResult();
+        // No manual navigation; router or auth state listener handles that.
       } on FirebaseAuthException catch (e) {
         if (kDebugMode) debugPrint('Error in web Google sign-in: $e');
         setState(() {
@@ -69,6 +54,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         });
       }
     } else {
+      // Native platforms using google_sign_in plugin
       try {
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
         if (googleUser == null) {
@@ -79,7 +65,6 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         }
 
         final googleAuth = await googleUser.authentication;
-
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
@@ -94,13 +79,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
           await prefs.setBool('isAuthenticated', true);
           await prefs.setString('userEmail', userCredential.user!.email ?? '');
           await prefs.setString(
-            'userName',
-            userCredential.user!.displayName ?? '',
-          );
+              'userName', userCredential.user!.displayName ?? '');
           await prefs.setString(
-            'userPhoto',
-            userCredential.user!.photoURL ?? '',
-          );
+              'userPhoto', userCredential.user!.photoURL ?? '');
         }
       } catch (e) {
         if (kDebugMode) debugPrint('Error signing in with Google: $e');
@@ -110,11 +91,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(_error!)));
       } finally {
-        if (mounted) {
-          setState(() {
-            _isSigningIn = false;
-          });
-        }
+        setState(() {
+          _isSigningIn = false;
+        });
       }
     }
 
@@ -123,14 +102,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isAuthenticated', true);
       await prefs.setString('userEmail', userCredential!.user!.email ?? '');
-      await prefs.setString(
-        'userName',
-        userCredential.user!.displayName ?? '',
-      );
-      await prefs.setString(
-        'userPhoto',
-        userCredential.user!.photoURL ?? '',
-      );
+      await prefs.setString('userName', userCredential.user!.displayName ?? '');
+      await prefs.setString('userPhoto', userCredential.user!.photoURL ?? '');
     }
   }
 

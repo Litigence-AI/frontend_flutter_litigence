@@ -1,5 +1,4 @@
 import 'package:Litigence/authentication/auth_screen.dart';
-// import 'package:Litigence/authentication/google_auth/google_auth_screen.dart';
 import 'package:Litigence/authentication/otp_auth/otp_auth_screen.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import '../onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'authentication/otp_auth/verify_phone_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'providers.dart';
 
 Future<void> main() async {
@@ -75,17 +73,19 @@ class MyApp extends ConsumerWidget {
 GoRouter createRouter(bool isOnboardingComplete, User? firebaseUser) {
   return GoRouter(
     debugLogDiagnostics: true,
-    redirect: (context, state) {
-      // If the user is going through the OTP process, don't force redirect yet.
+    redirect: (BuildContext context, GoRouterState state) {
+      // We don't want to interfere with the OTP flow.
       if (state.matchedLocation == '/otpAuthScreen' ||
           state.matchedLocation == '/verifyPhoneNumberScreen') {
         return null;
       }
 
-      // For normal flow:
+      // Not yet onboarded? Always send to onboarding screen.
       if (!isOnboardingComplete && state.matchedLocation != '/onboardScreen') {
         return '/onboardScreen';
       }
+
+      // Onboarded now, but user is NOT logged in.
       if (isOnboardingComplete &&
           firebaseUser == null &&
           state.matchedLocation != '/authScreen' &&
@@ -93,11 +93,14 @@ GoRouter createRouter(bool isOnboardingComplete, User? firebaseUser) {
           state.matchedLocation != '/verifyPhoneNumberScreen') {
         return '/authScreen';
       }
+
+      // Onboarded now and user IS logged in, so always navigate to chat screen.
       if (isOnboardingComplete &&
           firebaseUser != null &&
           state.matchedLocation != '/chatScreen') {
         return '/chatScreen';
       }
+
       return null;
     },
     routes: [
