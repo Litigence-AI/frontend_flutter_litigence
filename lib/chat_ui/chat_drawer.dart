@@ -1,6 +1,7 @@
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../utils/helpers.dart';
 
 class ChatDrawer extends ConsumerWidget {
@@ -18,7 +19,6 @@ class ChatDrawer extends ConsumerWidget {
   // Create a method to handle logout
   Future<void> _handleLogout(BuildContext context, WidgetRef ref) async {
     try {
-
       await FirebaseAuth.instance.signOut();
       await FirebasePhoneAuthHandler.signOut(context);
 
@@ -26,6 +26,8 @@ class ChatDrawer extends ConsumerWidget {
       if (context.mounted) {
         showSnackBar('Logged out successfully!');
       }
+
+      context.go('/authScreen');
 
       // No need to manually navigate - the router will handle it
       // because the auth state will change automatically
@@ -38,10 +40,6 @@ class ChatDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    // Watch the firebase user state
-    // final firebaseUser = ref.watch(firebaseUserProvider);
-    
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
