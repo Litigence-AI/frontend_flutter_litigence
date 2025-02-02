@@ -64,7 +64,6 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
 
   @override
   Widget build(BuildContext context) {
-
     print('VerifyPhoneNumberScreen: ${widget.phoneNumber}');
 
     return SafeArea(
@@ -76,7 +75,8 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
         autoRetrievalTimeOutDuration: const Duration(seconds: 60),
         otpExpirationDuration: const Duration(seconds: 60),
         onCodeSent: () {
-          verify_phone_number_screen.log(VerifyPhoneNumberScreen.id, msg: 'OTP sent!');
+          verify_phone_number_screen.log(VerifyPhoneNumberScreen.id,
+              msg: 'OTP sent!');
         },
         onLoginSuccess: (userCredential, autoVerified) async {
           verify_phone_number_screen.log(
@@ -86,7 +86,8 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                 : 'OTP was verified manually!',
           );
 
-          verify_phone_number_screen.showSnackBar('Phone number verified successfully!');
+          verify_phone_number_screen
+              .showSnackBar('Phone number verified successfully!');
 
           verify_phone_number_screen.log(
             VerifyPhoneNumberScreen.id,
@@ -105,9 +106,11 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
 
           switch (authException.code) {
             case 'invalid-phone-number':
-              return verify_phone_number_screen.showSnackBar('Invalid phone number!');
+              return verify_phone_number_screen
+                  .showSnackBar('Invalid phone number!');
             case 'invalid-verification-code':
-              return verify_phone_number_screen.showSnackBar('The entered OTP is invalid!');
+              return verify_phone_number_screen
+                  .showSnackBar('The entered OTP is invalid!');
             default:
               verify_phone_number_screen.showSnackBar('Something went wrong!');
           }
@@ -188,7 +191,6 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                             ),
                           const SizedBox(height: 30),
                           PinInputField(
-                          
                             length: 6,
                             onFocusChange: (hasFocus) async {
                               if (hasFocus)
@@ -198,8 +200,10 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                               final verified =
                                   await controller.verifyOtp(enteredOtp);
                               if (verified) {
+                                context.go('/chatScreen');
                                 // number verify success
                               } else {
+                                context.go('/authScreen');
                                 // phone verification failed
                               }
                             },
@@ -223,7 +227,8 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
                                       if (controller.isOtpExpired) {
-                                        verify_phone_number_screen.log(VerifyPhoneNumberScreen.id,
+                                        verify_phone_number_screen.log(
+                                            VerifyPhoneNumberScreen.id,
                                             msg: 'Resend OTP');
                                         await controller.sendOTP();
                                       } else {

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'onboarding_widget.dart';
 import '../../utils/size_config.dart';
 import 'package:Litigence/onboarding/textfont_getter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers.dart';
 
 class OnboardingScreen1 extends ConsumerWidget {
   const OnboardingScreen1({Key? key}) : super(key: key);
@@ -41,10 +40,11 @@ class OnboardingScreen3 extends ConsumerStatefulWidget {
 }
 
 class _OnboardingScreen3State extends ConsumerState<OnboardingScreen3> {
+  
   Future<void> _completeOnboarding(BuildContext context) async {
-    // Update the reactive onboarding state.
-    await ref.read(onboardingStateProvider.notifier).completeOnboarding();
-    // context.go( root );
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_complete', true);
+    context.go('/authScreen');
   }
 
   @override
@@ -59,8 +59,7 @@ class _OnboardingScreen3State extends ConsumerState<OnboardingScreen3> {
         ),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor:
-                Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
+            backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
             padding: EdgeInsets.symmetric(
               horizontal: SizeConfig.getProportionalScreenWidth(40),
               vertical: SizeConfig.getProportionalScreenHeight(25),
