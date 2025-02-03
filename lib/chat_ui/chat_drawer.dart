@@ -1,12 +1,10 @@
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../utils/helpers.dart';
 
-class ChatDrawer extends ConsumerWidget {
+class ChatDrawer extends StatelessWidget {
   // final List<Map<String, dynamic>> chatTitles; // List of chat titles
   // final bool isLoading; // Whether titles are loading
   // final ValueChanged<String> onChatSelected; // Callback for chat selection
@@ -20,16 +18,14 @@ class ChatDrawer extends ConsumerWidget {
 
   Future<void> signOutGoogle() async {
 
-    final _secureStorage = FlutterSecureStorage();
     final _googleSignIn = GoogleSignIn(scopes: ['email']);
 
     await _googleSignIn.signOut();
-    await _secureStorage.deleteAll();
     await FirebaseAuth.instance.signOut();
   }
 
   // Create a method to handle logout
-  Future<void> _handleLogout(BuildContext context, WidgetRef ref) async {
+  Future<void> _handleLogout(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
       await FirebasePhoneAuthHandler.signOut(context);
@@ -51,7 +47,7 @@ class ChatDrawer extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -84,7 +80,7 @@ class ChatDrawer extends ConsumerWidget {
           ListTile(
             title: const Text('Logout'),
             leading: const Icon(Icons.logout),
-            onTap: () => _handleLogout(context, ref),
+            onTap: () => _handleLogout(context),
           ),
         ],
       ),
