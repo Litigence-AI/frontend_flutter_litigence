@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,14 +13,14 @@ Future<void> storeUserProfile(User user) async {
   await prefs.setString('profilePic', user.photoURL ?? '');
 }
 
-class AuthScreen extends ConsumerStatefulWidget {
+class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
   @override
-  ConsumerState<AuthScreen> createState() => _AuthScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends ConsumerState<AuthScreen> {
+class _AuthScreenState extends State<AuthScreen> {
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -52,6 +51,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   Future<UserCredential> _webSignIn() async {
     final provider = GoogleAuthProvider()
       ..setCustomParameters({'prompt': 'select_account'});
+    
     return await FirebaseAuth.instance.signInWithPopup(provider);
   }
 

@@ -54,23 +54,23 @@ class _PinInputFieldState extends State<PinInputField> {
     super.dispose();
   }
 
-  PinTheme _getPinTheme(
-    BuildContext context, {
-    required Size size,
-  }) {
-    return PinTheme(
-      height: size.height,
-      width: size.width,
-      textStyle: const TextStyle(
-        fontSize: 25,
-        fontWeight: FontWeight.bold,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(7.5),
-      ),
-    );
-  }
+  // PinTheme _getPinTheme(
+  //   BuildContext context, {
+  //   required Size size,
+  // }) {
+  //   return PinTheme(
+  //     height: size.height,
+  //     width: size.width,
+  //     textStyle: const TextStyle(
+  //       fontSize: 25,
+  //       fontWeight: FontWeight.bold,
+  //     ),
+  //     decoration: BoxDecoration(
+  //       color: Theme.of(context).cardColor,
+  //       borderRadius: BorderRadius.circular(7.5),
+  //     ),
+  //   );
+  // }
 
   static const _focusScaleFactor = 1.15;
 
