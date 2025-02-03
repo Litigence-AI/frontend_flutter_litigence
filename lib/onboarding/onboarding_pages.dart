@@ -60,8 +60,8 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
           style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primaryContainer,
             padding: EdgeInsets.symmetric(
-              horizontal: SizeConfig.getProportionalScreenWidth(40),
-              vertical: SizeConfig.getProportionalScreenHeight(25),
+              horizontal: SizeConfig.getProportionalScreenWidth(37),
+              vertical: SizeConfig.getProportionalScreenHeight(24),
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -71,8 +71,8 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
           child: CustomText(
             context: context,
             text: "Get Started",
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ),
