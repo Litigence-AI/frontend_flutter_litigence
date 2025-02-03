@@ -6,6 +6,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/helpers.dart' as helper;
+
 Future<void> storeUserProfile(User user) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('username', user.displayName ?? '');
@@ -43,7 +45,15 @@ class _AuthScreenState extends State<AuthScreen> {
         context.go('/chatScreen');
       }
     } on FirebaseAuthException catch (e) {
+      print(e);
+      helper.showSnackBar("e");
       _handleAuthError(e);
+      return null;
+    } on Exception catch (e) {
+      print("other error"); 
+      helper.showSnackBar("e");
+
+      print(e);
       return null;
     }
   }
@@ -51,7 +61,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Future<UserCredential> _webSignIn() async {
     final provider = GoogleAuthProvider()
       ..setCustomParameters({'prompt': 'select_account'});
-    
+
     return await FirebaseAuth.instance.signInWithPopup(provider);
   }
 
@@ -140,36 +150,36 @@ class _AuthScreenState extends State<AuthScreen> {
 
                   Column(
                     children: [
-                      ElevatedButton(
-                        onPressed: signInWithGoogle,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          minimumSize: const Size(300, 50),
-                          // Set fixed width for buttons
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/auth/google.png',
-                              height: 24,
-                            ),
-                            const SizedBox(width: 12),
-                            const Text(
-                              'Continue with Google',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
+                      // ElevatedButton(
+                      //   onPressed: signInWithGoogle,
+                      //   style: ElevatedButton.styleFrom(
+                      //     backgroundColor: Colors.white,
+                      //     foregroundColor: Colors.black,
+                      //     minimumSize: const Size(300, 50),
+                      //     // Set fixed width for buttons
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(8),
+                      //     ),
+                      //   ),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Image.asset(
+                      //         'assets/auth/google.png',
+                      //         height: 24,
+                      //       ),
+                      //       const SizedBox(width: 12),
+                      //       const Text(
+                      //         'Continue with Google',
+                      //         style: TextStyle(
+                      //           fontSize: 16,
+                      //           fontWeight: FontWeight.w500,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           context.go('/otpAuthScreen');
@@ -221,7 +231,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       TextButton(
                         onPressed: () {
                           _launchURL(
-                              'https://litigence-ai.github.io/Terms-of-service/');
+                              'https://litigence-ai.github.io/terms-of-service/');
                         },
                         child: const Text(
                           'Terms of service',
