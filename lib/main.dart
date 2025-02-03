@@ -1,3 +1,4 @@
+
 import 'package:Litigence/authentication/auth_screen.dart';
 import 'package:Litigence/authentication/otp_auth/otp_auth_screen.dart';
 import 'package:Litigence/utils/globals.dart';
@@ -6,11 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'chat_ui/chat_page.dart';
 import 'firebase_options.dart';
-import '../onboarding/onboarding_screen.dart';
+import 'onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'authentication/otp_auth/verify_phone_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // For User type.
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +25,11 @@ Future<void> main() async {
     debugPrint("Firebase Initialization Error: $e");
   }
 
-  runApp(ProviderScope(child: FirebasePhoneAuthProvider(child: MyApp())));
+  runApp(
+    ProviderScope(
+      child: FirebasePhoneAuthProvider(child: MyApp()),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {
@@ -31,58 +37,52 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the onboarding status from the provider.
-    final onboardingAsync = ref.watch(onboardingCompleteProvider);
+    // Watch the onboarding state from our mutable provider.
+    final isOnboardingComplete = ref.watch(onboardingCompleteProvider);
 
-    return onboardingAsync.when(
-      data: (isOnboardingComplete) {
-        // Once we have onboarding status, watch the Firebase auth state.
-        final firebaseUserAsync = ref.watch(firebaseUserProvider);
-        final firebaseUser = firebaseUserAsync.asData?.value;
+    // Also watch the Firebase auth status.
+    final firebaseUserAsync = ref.watch(firebaseUserProvider);
+    final firebaseUser = firebaseUserAsync.asData?.value;
 
-        // We'll create the router in the next step.
-        // For now, we simply pass these values to our router.
-        final router = createRouter(isOnboardingComplete, firebaseUser);
+    // Create our router with the current state.
+    final router = createRouter(isOnboardingComplete, firebaseUser);
 
-        return MaterialApp.router(      
-          scaffoldMessengerKey: Globals.scaffoldMessengerKey,
-          title: 'Litigence AI',
-          theme: ThemeData.dark(useMaterial3: true).copyWith(
-            textTheme: ThemeData.dark(useMaterial3: true).textTheme.apply(
-                  fontFamily: 'Roboto',
-                ),
-            primaryTextTheme: const TextTheme().apply(
-              fontFamily: 'Roboto',
-            ),
-          ),
-          routerConfig: router,
-        );
-      },
-      loading: () => const MaterialApp(
-        home: Scaffold(
-          body: Center(child: CircularProgressIndicator()),
+    return MaterialApp.router(
+      scaffoldMessengerKey: Globals.scaffoldMessengerKey,
+      title: 'Litigence AI',
+      theme: ThemeData.dark(useMaterial3: true).copyWith(
+        textTheme: ThemeData.dark(useMaterial3: true)
+            .textTheme
+            .apply(fontFamily: 'Roboto'),
+        primaryTextTheme: const TextTheme().apply(
+          fontFamily: 'Roboto',
         ),
       ),
-      error: (error, stack) => MaterialApp(
-        home: Scaffold(
-          body: Center(child: Text('Error: $error')),
-        ),
-      ),
+      routerConfig: router,
     );
   }
 }
 
+/// Create a GoRouter instance that uses the current onboarding & auth states.
 GoRouter createRouter(bool isOnboardingComplete, User? firebaseUser) {
   return GoRouter(
     debugLogDiagnostics: true,
-    initialLocation: '/onboardScreen',
-    // redirect: (BuildContext context, GoRouterState state) {
-    //   // Not yet onboarded? Always send to onboarding screen.
-    //   if (!isOnboardingComplete && state.matchedLocation != '/onboardScreen') {
-    //     return '/onboardScreen';
-    //   }
+    initialLocation: '/',
+    redirect: (BuildContext context, GoRouterState state) {
+      // Enforce onboarding:
+      if (!isOnboardingComplete && state.matchedLocation != '/onboardScreen') {
+        return '/onboardScreen';
+      }
 
-    // },
+      // Optionally, enforce authentication.
+      if (firebaseUser == null &&
+          state.matchedLocation != '/chatScreen') {
+        return '/authScreen';
+      }
+
+      // No redirection necessary.
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/onboardScreen',
