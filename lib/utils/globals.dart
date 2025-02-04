@@ -9,4 +9,12 @@ class Globals {
   static User? get firebaseUser => auth.currentUser;
 
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
+
+
+  // Primary legal base URL (change this as needed)
+  static const legalBaseUrl = 'https://litigence-ai.tech';
+  
+  // Fallback base URL in case the primary fails
+  static const legalFallbackBaseUrl = 'https://litigence-ai.web.app';
 }
