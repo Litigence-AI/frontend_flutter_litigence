@@ -6,6 +6,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../legal_link_row.dart';
+
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
@@ -207,33 +209,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       )
                     ],
                   ),
-
-                  // Replace the existing TextButton actions with these:
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        // Use deep link with kebab-case path for privacy-policy
-                        onPressed: () {
-                          context.go('/privacy-policy');
-                        },
-                        child: const Text(
-                          'Privacy policy',
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                      ),
-                      TextButton(
-                        // Use deep link with kebab-case path for terms-of-service
-                        onPressed: () {
-                          context.go('/terms-of-service');
-                        },
-                        child: const Text(
-                          'Terms of service',
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                      ),
-                    ],
-                  ),
+                  LegalLinksRow()
                 ],
               ),
             ),
