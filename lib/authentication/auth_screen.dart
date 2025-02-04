@@ -62,7 +62,7 @@ class _AuthScreenState extends State<AuthScreen> {
       }
 
       final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
+          await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -70,7 +70,7 @@ class _AuthScreenState extends State<AuthScreen> {
       );
 
       UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithCredential(credential);
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
       if (mounted && userCredential.user != null) {
         // Store authenticated status and account details in SharedPreferences
@@ -94,14 +94,12 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // double screenWidth = MediaQuery.of(context).size.width;
-  // double textSize = screenWidth > 800 ? 32 : screenWidth > 600 ? 28 : 24;
-  // double paddingSize = screenWidth > 800 ? 32.0 : 24.0;
-  // double buttonWidth = screenWidth > 800 ? 150 : 100;
+    // double textSize = screenWidth > 800 ? 32 : screenWidth > 600 ? 28 : 24;
+    // double paddingSize = screenWidth > 800 ? 32.0 : 24.0;
+    // double buttonWidth = screenWidth > 800 ? 150 : 100;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -114,10 +112,9 @@ class _AuthScreenState extends State<AuthScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
-                 // crossAxisAlignment: CrossAxisAlignment.spacebetween,
+                // crossAxisAlignment: CrossAxisAlignment.spacebetween,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-
                   const Text(
                     "Litigence AI",
                     style: TextStyle(
@@ -175,8 +172,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height:20),
-
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           context.go('/otpAuthScreen');
@@ -210,28 +206,26 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                       )
                     ],
-                  )
+                  ),
 
-                  ,
-
+                  // Replace the existing TextButton actions with these:
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
+                        // Use deep link with kebab-case path for privacy-policy
                         onPressed: () {
-                          _launchURL(
-                              'https://litigence-ai.github.io/privacy-policy/');
+                          context.go('/privacy-policy');
                         },
                         child: const Text(
                           'Privacy policy',
                           style: TextStyle(color: Colors.white70),
                         ),
                       ),
-
                       TextButton(
+                        // Use deep link with kebab-case path for terms-of-service
                         onPressed: () {
-                          _launchURL(
-                              'https://litigence-ai.github.io/Terms-of-service/');
+                          context.go('/terms-of-service');
                         },
                         child: const Text(
                           'Terms of service',
@@ -249,4 +243,3 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
-

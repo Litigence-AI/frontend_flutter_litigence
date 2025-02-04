@@ -1,6 +1,7 @@
 import 'package:Litigence/authentication/auth_screen.dart';
 import 'package:Litigence/authentication/google_auth/google_auth_screen.dart';
 import 'package:Litigence/authentication/otp_auth/otp_auth_screen.dart';
+import 'package:Litigence/tos.dart';
 import 'package:Litigence/utils/globals.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
@@ -79,20 +80,35 @@ class _MyAppState extends State<MyApp> {
           builder: (context, state) => const AuthScreen(),
         ),
         GoRoute(
-          path: '/otpAuthScreen', 
-          builder: (context, state) => const OtpAuth()
-        ),
+            path: '/otpAuthScreen',
+            builder: (context, state) => const OtpAuth()),
         GoRoute(
-          path: '/googleAuthScreen', 
-          builder: (context, state) => const GoogleAuthScreen()
-        ),
+            path: '/googleAuthScreen',
+            builder: (context, state) => const GoogleAuthScreen()),
         GoRoute(
           path: '/verifyPhoneNumberScreen',
           builder: (context, state) => VerifyPhoneNumberScreen(
             phoneNumber: state.extra as String,
           ),
         ),
+        // Updated routes using your custom domain
 
+        // In your GoRouter configuration:
+        GoRoute(
+          path: '/terms-of-service',
+          builder: (context, state) {
+            return LegalInfoPage(
+                legalType: 'tos'); // Use 'tos' to represent Terms of Service
+          },
+        ),
+        GoRoute(
+          path: '/privacy-policy',
+          builder: (context, state) {
+            return LegalInfoPage(
+                legalType:
+                    'privacy'); // Use 'privacy' to represent Privacy Policy
+          },
+        ),
       ],
     );
 
