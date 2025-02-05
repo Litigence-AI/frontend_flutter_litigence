@@ -17,4 +17,9 @@ class Globals {
   
   // Fallback base URL in case the primary fails
   static const legalFallbackBaseUrl = 'https://litigence-ai.web.app';
+
+    // Contact Information
+  static const contactEmail = 'litigence.ai@gmail.com';
+  
+  // Legal Document Dates
 }
