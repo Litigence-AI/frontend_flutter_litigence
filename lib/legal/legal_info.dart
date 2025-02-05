@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:Litigence/legal_text.dart';
+import 'package:Litigence/legal/legal_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'utils/globals.dart';
+import '../utils/globals.dart';
 
 class LegalInfoPage extends StatelessWidget {
   final String legalType;

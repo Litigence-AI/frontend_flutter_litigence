@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'utils/globals.dart'; 
+import '../utils/globals.dart'; 
 
 class LegalLinksRow extends StatelessWidget {
   const LegalLinksRow({Key? key}) : super(key: key);

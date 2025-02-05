@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../legal_link_row.dart';
+import '../legal/legal_link_row.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
