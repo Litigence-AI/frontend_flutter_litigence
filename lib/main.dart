@@ -1,7 +1,7 @@
 import 'package:Litigence/authentication/auth_screen.dart';
 import 'package:Litigence/authentication/google_auth/google_auth_screen.dart';
 import 'package:Litigence/authentication/otp_auth/otp_auth_screen.dart';
-import 'package:Litigence/tos.dart';
+import 'package:Litigence/legal_info.dart';
 import 'package:Litigence/utils/globals.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';

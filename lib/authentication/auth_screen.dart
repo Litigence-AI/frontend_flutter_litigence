@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../legal_link_row.dart';
 
@@ -16,12 +15,7 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $url');
-    }
-  }
+
 
   @override
   void initState() {
