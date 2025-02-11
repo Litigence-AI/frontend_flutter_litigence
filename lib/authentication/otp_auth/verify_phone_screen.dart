@@ -86,8 +86,8 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                 : 'OTP was verified manually!',
           );
 
-          verify_phone_number_screen
-              .showSnackBar('Phone number verified successfully!');
+          // verify_phone_number_screen
+          //     .showSnackBar('Phone number verified successfully!');
 
           verify_phone_number_screen.log(
             VerifyPhoneNumberScreen.id,
