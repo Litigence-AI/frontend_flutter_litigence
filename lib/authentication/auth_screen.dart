@@ -150,36 +150,36 @@ class _AuthScreenState extends State<AuthScreen> {
 
                   Column(
                     children: [
-                      // ElevatedButton(
-                      //   onPressed: signInWithGoogle,
-                      //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor: Colors.white,
-                      //     foregroundColor: Colors.black,
-                      //     minimumSize: const Size(300, 50),
-                      //     // Set fixed width for buttons
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(8),
-                      //     ),
-                      //   ),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       Image.asset(
-                      //         'assets/auth/google.png',
-                      //         height: 24,
-                      //       ),
-                      //       const SizedBox(width: 12),
-                      //       const Text(
-                      //         'Continue with Google',
-                      //         style: TextStyle(
-                      //           fontSize: 16,
-                      //           fontWeight: FontWeight.w500,
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: signInWithGoogle,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          minimumSize: const Size(300, 50),
+                          // Set fixed width for buttons
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/auth/google.png',
+                              height: 24,
+                            ),
+                            const SizedBox(width: 12),
+                            const Text(
+                              'Continue with Google',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           context.go('/otpAuthScreen');
