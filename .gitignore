@@ -55,3 +55,4 @@ debug.keystore
 android/.kotlin/sessions/kotlin-compiler-440959573953299424.salive
 firebase.json
 android/app/google-services.json
+.idx/dev.nix
