@@ -7,7 +7,7 @@ import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'chat_ui/chat_page.dart';
+import 'chat_ui/chat/chat_page.dart';
 import 'firebase_options.dart';
 import '../onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
