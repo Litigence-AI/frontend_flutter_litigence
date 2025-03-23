@@ -43,10 +43,13 @@ First, install the FlutterFire CLI if you haven't already:
 dart pub global activate flutterfire_cli
 ```
 
-Then configure Firebase with your project:
+Next, create a new Firebase project at
+https://console.firebase.google.com/
+
+get `your-project-id` & configure Firebase with your project:
 
 ```bash
-flutterfire configure --project=
+flutterfire configure --project=your-project-id
 ```
 
 This will automatically generate:
@@ -58,22 +61,17 @@ This will automatically generate:
 
 #### Android Release Signing
 
-1. Create a directory for your keystore:
+1. Create your keystore file:
 ```bash
-mkdir -p android/app/keystore
+keytool -genkey -v -keystore android/app/my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias release
 ```
 
-2. Create your keystore file:
-```bash
-keytool -genkey -v -keystore android/app/keystore/my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias release
-```
-
-3. Create the key.properties file:
+2. Create the key.properties file:
 ```bash
 touch android/key.properties
 ```
 
-4. Add your keystore information (replace placeholders with actual values):
+3. Add your keystore information (replace placeholders with actual values):
 ```
 storePassword=
 keyPassword=
@@ -81,49 +79,26 @@ keyAlias=release
 storeFile=keystore/my-release-key.jks
 ```
 
-5. For debug builds, place your debug.keystore file in the project root:
+4. For debug builds, place your debug.keystore file in the project root:
 ```bash
 cp ~/.android/debug.keystore ./debug.keystore
 ```
 
 ## Running the Application
 
-### Development Mode
-
-```bash
-# For Android
-flutter run
-
-# For Web
-flutter run -d chrome
-```
-
-### Running with Backend Connection
 
 For development or production, use:
 ```bash
 flutter run --dart-define=BACKEND_URL=
 ```
 
-### Production Builds
+Configure Android Studio or Project IDX to run the app with enviroinment variables:
 
-#### Android Build
-
-```bash
-flutter build apk --release
-# OR for app bundle
-flutter build appbundle --release
-```
-
-#### Web Build
-
-```bash
-flutter build web --release --dart-define=BACKEND_URL=
-```
+![env_android_studio.png](lib/docs/env_android_studio.png)
 
 ## Project Structure
 
-Based on the screenshot, the project has this structure:
+![paste_path_instructions.png](lib/docs/paste_path_instructions.png)
 ```
 ├── android               # Android-specific code
 │   ├── app
